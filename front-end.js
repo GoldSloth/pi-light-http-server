@@ -15,21 +15,19 @@ var colourPicker = document.getElementById("colourPicker")
 var brightness = document.getElementById("brightness")
 var consoleOutput = document.getElementById("consoleOutput")
 
-var status
-
 function updatePage() {
     resp = this.responseText.replace(/'/g, "\"")
     consoleOutput.innerHTML += "Recieved packet: " + resp
     console.log(resp)
     var status = JSON.parse(resp)
-
+    console.log(status)
     colourPicker.value = rgbToHex(status.colour.red, status.colour.green, status.colour.blue)
     brightness.value = status.brightness
 }
 
 function sendPacket(status) {
     var req = new XMLHttpRequest()
-    console.log(status)
+    console.log(JSON.stringify(status))
     req.addEventListener("load", updateLog)
     req.open("POST", "http://192.168.1.75:8000")
     req.setRequestHeader("Access-Control-Allow-Origin", "*")
@@ -43,16 +41,17 @@ function updateLog() {
 
 function changeStatus() {
     var newColour = hexToRgb(colourPicker.value) 
-    status = {
+    console.log(JSON.stringify(status))
+    var status = {
         "colour": 
         {
-            "red": newColour.r / 255,
-            "green": newColour.g / 255,
-            "blue": newColour.b / 255
+            "red": (newColour.r / 255),
+            "green": (newColour.g / 255),
+            "blue": (newColour.b / 255)
         },
         "brightness": brightness.value
     }
-
+    console.log(JSON.stringify(status))
     sendPacket(status)
 }
 
