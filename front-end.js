@@ -27,12 +27,13 @@ function updatePage() {
     brightness.value = status.brightness
 }
 
-function sendPacket() {
+function sendPacket(status) {
     var req = new XMLHttpRequest()
-
-    req.addEventListener("load", response)
+    console.log(status)
+    req.addEventListener("load", updateLog)
     req.open("POST", "http://192.168.1.75:8000")
     req.setRequestHeader("Access-Control-Allow-Origin", "*")
+    req.setRequestHeader("Content-Type", "text/plain")
     req.send("SET"+JSON.stringify(status))
 }
 
@@ -51,6 +52,8 @@ function changeStatus() {
         },
         "brightness": brightness.value
     }
+
+    sendPacket(status)
 }
 
 var request = new XMLHttpRequest()
@@ -60,5 +63,3 @@ request.open("GET", "http://192.168.1.75:8000")
 request.setRequestHeader("Access-Control-Allow-Origin", "*")
 request.send()
 
-colourPicker.addEventListener("onChange", changeStatus)
-brightness.addEventListener("onChange", changeStatus)

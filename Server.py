@@ -1,5 +1,5 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
-from ast import literal_eval
+import json
 
 class Server(BaseHTTPRequestHandler):
     def __init__(self, lights, *args):
@@ -18,7 +18,7 @@ class Server(BaseHTTPRequestHandler):
 
     def do_GET(self):
         self._set_headers()
-        self.wfile.write(str(self.lights.getState()).encode("UTF-8"))
+        self.wfile.write(json.dumps(self.lights.getState()).encode("UTF-8"))
 
     def do_POST(self):
         content_length = int(self.headers['Content-Length'])
@@ -27,7 +27,7 @@ class Server(BaseHTTPRequestHandler):
 
         self._set_headers()
         if post_data[0:3] == "SET":
-            self.lights.setState(literal_eval(post_data[3:]))
+            self.lights.setState(json.loads(post_data[3:]))
             self.lights.update()
             self.wfile.write("STATUS OK".encode("UTF-8"))
         else:
