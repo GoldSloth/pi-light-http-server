@@ -27,9 +27,9 @@ class LightStrip:
 
     def update(self):
         for pixel in range(self.numpixels):
-            self.lstrip.setPixelColor(pixel, int(int(self.state["colour"]["green"]) * 255), int(int(self.state["colour"]["red"]) * 255), int(int(self.state["colour"]["blue"]) * 255))
+            self.lstrip.setPixelColor(pixel, int(float(self.state["colour"]["green"]) * 255), int(float(self.state["colour"]["red"]) * 255), int(float(self.state["colour"]["blue"]) * 255))
         
-        self.lstrip.setBrightness(int(int(self.state["brightness"]) * 255))
+        self.lstrip.setBrightness(int(float(self.state["brightness"]) * 255))
         self.lstrip.show()
 
     def stop(self):
