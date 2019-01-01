@@ -3,9 +3,9 @@ from ast import literal_eval
 
 class Server(BaseHTTPRequestHandler):
     def __init__(self, lights, *args):
-        super().__init__(*args)
         self.lights = lights
-
+        super().__init__(*args)
+        
     def _set_headers(self):
         self.send_response(200)
         self.send_header('Content-type', 'text/plain')
@@ -14,7 +14,7 @@ class Server(BaseHTTPRequestHandler):
     def do_GET(self):
         self._set_headers()
         self.wfile.write(str(self.lights.getState()).encode("UTF-8"))
-        
+
     def do_POST(self):
         content_length = int(self.headers['Content-Length'])
         post_data = self.rfile.read(content_length).decode("UTF-8")
