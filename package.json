@@ -1,0 +1,21 @@
+{
+  "name": "pilight-http",
+  "version": "1.0.0",
+  "description": "A http server and client to control a light strip.",
+  "scripts": {
+    "start": "http-server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GolddolphinSKB-Fexcraftian/pi-light-http-server.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/GolddolphinSKB-Fexcraftian/pi-light-http-server/"
+  },
+  "homepage": "https://github.com/GolddolphinSKB-Fexcraftian/pi-light-http-server#readme",
+  "dependencies": {
+    "http-server": "^0.11.1"
+  }
+}
