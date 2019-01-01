@@ -4,7 +4,7 @@ from LightHandler import LightStrip
 class Server(BaseHTTPRequestHandler):
     def __init__(self, *args, **kwargs):
         super(Server, self).__init__(*args, **kwargs)
-        global lights
+        self.lights = LightStrip(30)
     def _set_headers(self):
         self.send_response(200)
         self.send_header('Content-type', 'text/plain')
@@ -12,7 +12,7 @@ class Server(BaseHTTPRequestHandler):
 
     def do_GET(self):
         self._set_headers()
-        self.wfile.write(str(lights.getState()).encode("UTF-8"))
+        self.wfile.write(str(self.lights.getState()).encode("UTF-8"))
         
     def do_POST(self):
         content_length = int(self.headers['Content-Length'])
@@ -21,8 +21,8 @@ class Server(BaseHTTPRequestHandler):
 
         self._set_headers()
         if post_data[0:2] == "SET":
-            lights.setState(dict(post_data[3:]))
-            lights.update()
+            self.lights.setState(dict(post_data[3:]))
+            self.lights.update()
             self.wfile.write("STATUS OK".encode("UTF-8"))
         else:
             self.wfile.write("BAD STATUS".encode("UTF-8"))
