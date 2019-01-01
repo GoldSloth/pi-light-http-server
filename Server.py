@@ -1,5 +1,4 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
-from LightHandler import LightStrip
 
 class Server(BaseHTTPRequestHandler):
     def __init__(self, lights, *args):
