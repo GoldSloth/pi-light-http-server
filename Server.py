@@ -1,8 +1,9 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
+from ast import literal_eval
 
 class Server(BaseHTTPRequestHandler):
     def __init__(self, lights, *args):
-        super().__init__(self, *args)
+        super().__init__(*args)
         self.lights = lights
 
     def _set_headers(self):
@@ -20,8 +21,8 @@ class Server(BaseHTTPRequestHandler):
         print(post_data)
 
         self._set_headers()
-        if post_data[0:2] == "SET":
-            self.lights.setState(dict(post_data[3:]))
+        if post_data[0:3] == "SET":
+            self.lights.setState(literal_eval(post_data[3:]))
             self.lights.update()
             self.wfile.write("STATUS OK".encode("UTF-8"))
         else:
