@@ -2,9 +2,9 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 from LightHandler import LightStrip
 
 class Server(BaseHTTPRequestHandler):
-    def __init__(self):
-        super().__init__()
-        self.lights = LightStrip(30)
+    def __init__(self, lights, *args):
+        super().__init__(self, *args)
+        self.lights = lights
 
     def _set_headers(self):
         self.send_response(200)
@@ -27,10 +27,12 @@ class Server(BaseHTTPRequestHandler):
             self.wfile.write("STATUS OK".encode("UTF-8"))
         else:
             self.wfile.write("BAD STATUS".encode("UTF-8"))
-        
-def run(server_class=HTTPServer, handler_class=Server, port=8000):
+
+def run(lights, server_class=HTTPServer, port=8000):
+    def makeHandler(*args):
+        Server(lights, *args)
     server_address = ('', port)
-    httpd = server_class(server_address, handler_class)
+    httpd = server_class(server_address, makeHandler)
     print('Starting httpd...')
     try:
         httpd.serve_forever()
