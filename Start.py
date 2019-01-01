@@ -1,9 +1,10 @@
 from LightHandler import LightStrip
 from Server import *
 
-numPixels = 30
 global numPixels
-lights = LightStrip(numpixels = numPixels)
+numPixels = 30
+
 global lights
+lights = LightStrip(numpixels = numPixels)
 
 run()
