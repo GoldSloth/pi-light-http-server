@@ -22,7 +22,7 @@ class Server(BaseHTTPRequestHandler):
         if ns == False:
             self.wfile.write("c".encode("UTF-8"))
         else:
-            self.wfile.write(json.dumps().encode("UTF-8"))
+            self.wfile.write(json.dumps(ns).encode("UTF-8"))
 
     def do_POST(self):
         content_length = int(self.headers['Content-Length'])

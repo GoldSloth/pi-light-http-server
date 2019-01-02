@@ -19,7 +19,7 @@ class LightStrip:
             "brightness": 0.0
         }
 
-        self.changed = False
+        self.changed = True
 
     def getState(self, imp):
         if self.changed or imp:
