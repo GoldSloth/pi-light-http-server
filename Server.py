@@ -4,7 +4,6 @@ import json
 class Server(BaseHTTPRequestHandler):
     def __init__(self, lights, *args):
         self.lights = lights
-        self.connectedClients = []
         super().__init__(*args)
         
     def _set_headers(self):
@@ -20,11 +19,7 @@ class Server(BaseHTTPRequestHandler):
     def do_GET(self):
         self._set_headers()
 
-        if self.client_address not in self.connectedClients:
-            print(self.client_address)
-            self.connectedClients.append(self.client_address)
-
-        if self.path.endswith("nc") or len(self.connectedClients) > 1:
+        if self.path.endswith("nc"):
             ns = self.lights.getState(True)
         else:
             ns = self.lights.getState(False)
