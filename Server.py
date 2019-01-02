@@ -18,7 +18,7 @@ class Server(BaseHTTPRequestHandler):
 
     def do_GET(self):
         self._set_headers()
-        if self.path.endsWith("/nc"):
+        if self.path.endswith("nc"):
             ns = self.lights.getState(True)
         else:
             ns = self.lights.getState(False)
