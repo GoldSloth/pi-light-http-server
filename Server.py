@@ -18,7 +18,11 @@ class Server(BaseHTTPRequestHandler):
 
     def do_GET(self):
         self._set_headers()
-        self.wfile.write(json.dumps(self.lights.getState()).encode("UTF-8"))
+        ns = self.lights.getState(False)
+        if ns == False:
+            self.wfile.write("c".encode("UTF-8"))
+        else:
+            self.wfile.write(json.dumps().encode("UTF-8"))
 
     def do_POST(self):
         content_length = int(self.headers['Content-Length'])

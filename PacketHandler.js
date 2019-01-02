@@ -1,52 +1,59 @@
 function sendGET() {
     var request = new XMLHttpRequest()
-
-    request.open("GET", "http://192.168.1.75:8000", false)
-    request.setRequestHeader("Access-Control-Allow-Origin", "*")
-    request.send()
-
-    if (request.status == 200) {
-        return JSON.parse(request.responseText)
+    try {
+        request.open("GET", "http://192.168.1.75:8000", false)
+        request.setRequestHeader("Access-Control-Allow-Origin", "*")
+        request.send()
+        
+        if (request.status == 200) {
+            if (request.responseText == "c") {
+                return "c"
+            } else {
+                return JSON.parse(request.responseText)
+            }
+        }
+    } catch (e) {
+        return "ERR"
     }
 }
 
 function sendPOST(data) {
     var req = new XMLHttpRequest()
-    req.open("POST", "http://192.168.1.75:8000", false)
-    req.setRequestHeader("Access-Control-Allow-Origin", "*")
-    req.setRequestHeader("Content-Type", "text/plain")
-    req.send("SET"+JSON.stringify(data))
+    try {
+        req.open("POST", "http://192.168.1.75:8000", false)
+        req.setRequestHeader("Access-Control-Allow-Origin", "*")
+        req.setRequestHeader("Content-Type", "text/plain")
+        req.send("SET"+JSON.stringify(data))
 
-    if (req.status == 200) {
-        return req.responseText
+        if (req.status == 200) {
+            return req.responseText
+        }
+    } catch (e) {
+        return "ERR"
     }
 }
 
-var lastPktTime = performance.now() - 101
-var needsUpdate = false
-
 function handlePacket(message) {
     if (message[0] == "LOAD") {
-        postMessage(["RCVD-GET", sendGET()])
+        var resp = sendGET()
+        if (resp == "ERR") {
+            postMessage(["ERR", "XHR ERROR"])
+        } else if (resp == "c") {
+            postMessage(["RCVD-GET", "c"])
+        } else {
+            postMessage(["RCVD-GET", resp])
+        }
     } else if (message[0] == "SEND") {
-        postMessage(["RCVD-POST", sendPOST(message[1])])
+        var resp = sendPOST(message[1])
+        if (resp == "ERR") {
+            postMessage(["ERR", "XHR ERROR"])
+        } else {
+            postMessage(["RCVD-POST", resp])
+        }
     }
 }
 
 onmessage = function(msg) {
     var message = msg.data
-    if (performance.now() - lastPktTime > 100) {
-        handlePacket(message)
-    } else if (needsUpdate) {
-        needsUpdate = false
-        while (performance.now() - lastPktTime < 100) {
-            // 
-        }
-
-        handlePacket(message)
-    } else {
-        needsUpdate = true
-    }
-
-    lastPktTime = performance.now()
+    handlePacket(message)
 }

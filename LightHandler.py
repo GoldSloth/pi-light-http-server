@@ -12,18 +12,24 @@ class LightStrip:
 
         self.state = {
             "colour": {
-                "red": 0.5,
-                "green": 0.5,
-                "blue": 0.5
+                "red": 0.0,
+                "green": 0.0,
+                "blue": 0.0
             },
-            "brightness": 0.5
+            "brightness": 0.0
         }
 
-    def getState(self):
-        return self.state
+        self.changed = False
+
+    def getState(self, imp):
+        if self.changed or imp:
+            return self.state
+        else:
+            return False
 
     def setState(self, state):
         self.state = state
+        self.changed = True
 
     def update(self):
         for pixel in range(self.numpixels):

@@ -1,5 +1,8 @@
 function rgbToHex(r, g, b) {
-    return "#" + Math.floor(r * 255).toString(16) + Math.floor(g * 255).toString(16) + Math.floor(b * 255).toString(16)
+    let re = Math.floor(r * 255).toString(16).padStart(2, "0")
+    let ge = Math.floor(g * 255).toString(16).padStart(2, "0")
+    let be = Math.floor(b * 255).toString(16).padStart(2, "0")
+    return "#" + re + ge + be
 }
 
 function hexToRGB(hex) {
@@ -36,14 +39,23 @@ function makeNewStatus() {
 }
 
 function updateServer() {
-    var newStatus = makeNewStatus()
-    PcktHandler.postMessage(["SEND", newStatus])
-    updateLog("SENT", "POST " + JSON.stringify(newStatus))
+    if (needsUpdate) {
+        var newStatus = makeNewStatus()
+        PcktHandler.postMessage(["SEND", newStatus])
+        updateLog("SENT", "POST " + JSON.stringify(newStatus))
+        needsUpdate = false
+    }
 }
 
 function updateClient() {
     PcktHandler.postMessage(["LOAD"])
     updateLog("SENT", "GET")
+}
+
+var needsUpdate = false
+
+function flagChange() {
+    needsUpdate = true
 }
 
 var colourPicker = document.getElementById("colourPicker")
@@ -52,21 +64,30 @@ var consoleOutput = document.getElementById("consoleOutput")
 
 var PcktHandler = new Worker("PacketHandler.js")
 
-updateClient()
-
-colourPicker.addEventListener("input", updateServer)
-brightnessControl.addEventListener("input", updateServer)
+colourPicker.addEventListener("input", flagChange)
+brightnessControl.addEventListener("input", flagChange)
 
 PcktHandler.onmessage = function(msg) {
     var message = msg.data
     if (message[0] == "RCVD-GET") {
         var newStatus = message[1]
-        colourPicker.value = rgbToHex(newStatus.colour.red, newStatus.colour.green, newStatus.colour.blue)
-        brightnessControl.value = newStatus.brightness
-        updateLog(message[0], JSON.stringify(message[1]))
+        if (newStatus != "c") {
+            colourPicker.value = rgbToHex(newStatus.colour.red, newStatus.colour.green, newStatus.colour.blue)
+            brightnessControl.value = newStatus.brightness
+            updateLog(message[0], JSON.stringify(message[1]))
+        } else {
+            updateLog(message[0], "NO CHANGE")
+        }
     } else if (message[0] == "RCVD-POST") {
+        updateLog(message[0], message[1])
+    } else if (message[0] == "ERR") {
         updateLog(message[0], message[1])
     } else {
         updateLog("ERR", "Message type not supported: " + message[0])
     }
 }
+
+updateClient()
+
+var cUpdate = window.setInterval(updateClient, 2000)
+var sUpdate = window.setInterval(updateServer, 100)
