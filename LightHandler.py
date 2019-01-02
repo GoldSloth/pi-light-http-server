@@ -23,6 +23,7 @@ class LightStrip:
 
     def getState(self, imp):
         if self.changed or imp:
+            self.changed = False
             return self.state
         else:
             return False
