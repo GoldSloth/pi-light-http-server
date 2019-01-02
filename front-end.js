@@ -11,37 +11,11 @@ function hexToRgb(hex) {
     } : null;
 }
 
-var colourPicker = document.getElementById("colourPicker")
-var brightness = document.getElementById("brightness")
-var consoleOutput = document.getElementById("consoleOutput")
-
-function updatePage() {
-    resp = this.responseText.replace(/'/g, "\"")
-    consoleOutput.innerHTML += "Recieved packet: " + resp
-    console.log(resp)
-    var status = JSON.parse(resp)
-    console.log(status)
-    colourPicker.value = rgbToHex(status.colour.red, status.colour.green, status.colour.blue)
-    brightness.value = status.brightness
+function updateLog(action, text) {
+    consoleOutput.innerHTML += action + " " + text + "<br>"
 }
 
-function sendPacket(status) {
-    var req = new XMLHttpRequest()
-    console.log(JSON.stringify(status))
-    req.addEventListener("load", updateLog)
-    req.open("POST", "http://192.168.1.75:8000")
-    req.setRequestHeader("Access-Control-Allow-Origin", "*")
-    req.setRequestHeader("Content-Type", "text/plain")
-    req.send("SET"+JSON.stringify(status))
-}
-
-function updateLog() {
-    consoleOutput.innerHTML += "Recieved" + this.responseText
-}
-
-function changeStatus() {
-    var newColour = hexToRgb(colourPicker.value) 
-    console.log(JSON.stringify(status))
+function makeNewStatus() {
     var status = {
         "colour": 
         {
@@ -51,14 +25,36 @@ function changeStatus() {
         },
         "brightness": brightness.value
     }
-    console.log(JSON.stringify(status))
-    sendPacket(status)
+    return status
 }
 
-var request = new XMLHttpRequest()
+function updateServer() {
+    var newStatus = makeNewStatus()
+    PcktHandler.postMessage(["SEND", newStatus])
+}
 
-request.addEventListener("load", updatePage)
-request.open("GET", "http://192.168.1.75:8000")
-request.setRequestHeader("Access-Control-Allow-Origin", "*")
-request.send()
+function updateClient() {
+    PcktHandler.postMessage(["LOAD"])
+}
 
+var colourPicker = document.getElementById("colourPicker")
+var brightnessControl = document.getElementById("brightness")
+var consoleOutput = document.getElementById("consoleOutput")
+
+var PcktHandler = new Worker("PacketHandler.js")
+
+colourPicker.addEventListener("input", updateServer)
+brightnessControl.addEventListener("input", updateServer)
+
+PcktHandler.onmessage = function(message) {
+    if (message[0] == "RCVD-GET") {
+        var newStatus = message[1]
+        colourPicker.value = rgbToHex(newStatus.colour.red, newStatus.colour.green, newStatus.colour.blue)
+        brightnessControl.value = newStatus.brightness
+        updateLog(message[0], message[1])
+    } else if (mesage[0] == "RCVD-POST") {
+        updateLog(message[0], message[1])
+    } else {
+        updateLog("ERR", "Message type not supported: " + message[0])
+    }
+}
