@@ -21,6 +21,7 @@ class Server(BaseHTTPRequestHandler):
         self._set_headers()
 
         if self.client_address not in self.connectedClients:
+            print(self.client_address)
             self.connectedClients.append(self.client_address)
 
         if self.path.endswith("nc") or len(self.connectedClients) > 1:
