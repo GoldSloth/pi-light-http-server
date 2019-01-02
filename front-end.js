@@ -48,7 +48,11 @@ function updateServer() {
 }
 
 function updateClient() {
-    PcktHandler.postMessage(["LOAD"])
+    if (window.firstChange) {
+        PcktHandler.postMessage(["FLOAD"])
+    } else {
+        PcktHandler.postMessage(["LOAD"])
+    }
     updateLog("SENT", "GET")
 }
 
@@ -86,7 +90,7 @@ PcktHandler.onmessage = function(msg) {
         updateLog("ERR", "Message type not supported: " + message[0])
     }
 }
-
+window.firstChange = true
 updateClient()
 
 var cUpdate = window.setInterval(updateClient, 2000)

@@ -1,7 +1,11 @@
-function sendGET() {
+function sendGET(nc) {
     var request = new XMLHttpRequest()
     try {
-        request.open("GET", "http://192.168.1.75:8000", false)
+        if (nc) {
+            request.open("GET", "http://192.168.1.75:8000/nc", false)
+        } else {
+            request.open("GET", "http://192.168.1.75:8000", false)
+        }
         request.setRequestHeader("Access-Control-Allow-Origin", "*")
         request.send()
         
@@ -34,8 +38,12 @@ function sendPOST(data) {
 }
 
 function handlePacket(message) {
-    if (message[0] == "LOAD") {
-        var resp = sendGET()
+    if (message[0] == "LOAD" || message[0] == "FLOAD") {
+        if (message[0] == "FLOAD") {
+            var resp = sendGET(True)
+        } else {
+            var resp = sendGET(False)
+        }
         if (resp == "ERR") {
             postMessage(["ERR", "XHR ERROR"])
         } else if (resp == "c") {

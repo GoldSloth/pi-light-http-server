@@ -18,7 +18,10 @@ class Server(BaseHTTPRequestHandler):
 
     def do_GET(self):
         self._set_headers()
-        ns = self.lights.getState(False)
+        if self.url.endsWith("/nc"):
+            ns = self.lights.getState(True)
+        else:
+            ns = self.lights.getState(False)
         if ns == False:
             self.wfile.write("c".encode("UTF-8"))
         else:
