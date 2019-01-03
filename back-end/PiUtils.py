@@ -28,7 +28,6 @@ def getRAM():
     rswap = condenseString(swap, " ")
     rimem = rmem.split(" ")
     riswap = rswap.split(" ")
-    print(list(rmem))
     return {"mem": rimem, "swap": riswap}
 
 
