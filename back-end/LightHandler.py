@@ -19,18 +19,11 @@ class LightStrip:
             "brightness": 0.0
         }
 
-        self.changed = True
-
     def getState(self, imp):
-        if self.changed or imp:
-            self.changed = False
-            return self.state
-        else:
-            return False
+        return self.state
 
     def setState(self, state):
         self.state = state
-        self.changed = True
 
     def update(self):
         for pixel in range(self.numpixels):

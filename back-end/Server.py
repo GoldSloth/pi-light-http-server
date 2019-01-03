@@ -1,5 +1,6 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
+from PiUtils import *
 
 class Server(BaseHTTPRequestHandler):
     def __init__(self, lights, *args):
@@ -19,14 +20,11 @@ class Server(BaseHTTPRequestHandler):
     def do_GET(self):
         self._set_headers()
 
-        if self.path.endswith("nc"):
-            ns = self.lights.getState(True)
-        else:
-            ns = self.lights.getState(False)
-        if ns == False:
-            self.wfile.write("c".encode("UTF-8"))
-        else:
-            self.wfile.write(json.dumps(ns).encode("UTF-8"))
+        ns = self.lights.getState(True)
+        
+        ne = {"lights": ns, "CPU": getCPU(), "RAM": getRAM(), "TEMP": getTemp()}
+
+        self.wfile.write(json.dumps(ne).encode("UTF-8"))
 
     def do_POST(self):
         content_length = int(self.headers['Content-Length'])
