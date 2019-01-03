@@ -1,8 +1,8 @@
 import os
 
 def getTemp():
-    temp = os.popen("vcgencmd measure_temp").readlines()
-    return str(list(temp.replace("temp=","")[0]))
+    temp = os.popen("vcgencmd measure_temp").readline()
+    return str(temp).replace("temp=","")
 
 
 def getRAM():
