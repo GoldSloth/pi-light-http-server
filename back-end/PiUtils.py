@@ -22,8 +22,8 @@ def getTemp():
 
 def getRAM():
     result = os.popen('free').readlines()
-    rmem = condenseString(str(result[1]).replace("\n", "")[6:], " ")
-    rswap = condenseString(str(result[2]).replace("\n", "")[7:], " ")
+    rmem = condenseString(str(result[1]).replace("\n", ""), " ")
+    rswap = condenseString(str(result[2]).replace("\n", ""), " ")
     rimem = rmem.split(" ")
     riswap = rswap.split(" ")
     print(list(rmem))
