@@ -8,8 +8,8 @@ def getTemp():
 
 def getRAM():
     result = os.popen('free').readlines()
-    rmem = str(result[1])
-    rswap = str(result[2])
+    rmem = str(result[1])[:5].split(" ")
+    rswap = str(result[2])[:7].split(" ")
     return {"mem": rmem, "swap": rswap}
 
 

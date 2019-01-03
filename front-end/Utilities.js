@@ -64,6 +64,9 @@ function messageResponder(msg) {
         var lightData = newStatus.lights
         colourPicker.value = rgbToHex(lightData.colour.red, lightData.colour.green, lightData.colour.blue)
         brightnessControl.value = lightData.brightness
+        cpuMeter.innerText = newStatus.CPU + "%"
+        ramMeter.innerText = JSON.stringify(newStatus.RAM)
+        cpuTempMeter.innerText = newStatus.TEMP
         updateLog(message[0], JSON.stringify(message[1]))
 
     } else if (message[0] == "RCVD-POST") {

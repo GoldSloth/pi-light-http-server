@@ -15,7 +15,21 @@
     </div>
     <div>
         <label for="brightness">Brightness: </label>
-        <input type="range" id="brightness" name="brightness" min="0" max="1" value="0.5" step="0.01">
+        <input type="range" id="brightness" name="brightness" min="0" max="1" value="0.5" step="0.001">
+    </div>
+    <div>
+        <fieldset>
+        <label>CPU Usage</label>
+        <output id="cpuUsage">EEE</output>
+        </fieldset>
+        <fieldset>
+        <label>RAM Usage</label>
+        <output id="ramUsage">EEE</output>
+        </fieldset>
+        <fieldset>
+        <label>CPU Temp</label>
+        <output id="cpuTemp">EEE</output>
+    </fieldset>
     </div>
     <div id="consoleOutput" style.backgroundColor="#667766"></div>
     <script src="Utilities.js"></script>

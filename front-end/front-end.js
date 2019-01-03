@@ -4,6 +4,9 @@ var firstChange = true
 var colourPicker = document.getElementById("colourPicker")
 var brightnessControl = document.getElementById("brightness")
 var consoleOutput = document.getElementById("consoleOutput")
+var cpuMeter = document.getElementById("cpuUsage")
+var ramMeter = document.getElementById("ramUsage")
+var cpuTempMeter = document.getElementById("cpuTemp")
 
 var PcktHandler = new Worker("PacketHandler.js")
 
@@ -14,5 +17,5 @@ PcktHandler.onmessage = messageResponder
 
 updateClient()
 
-var cUpdate = window.setInterval(updateClient, 2000)
-var sUpdate = window.setInterval(updateServer, 100)
+var cUpdate = window.setInterval(updateClient, 500)
+var sUpdate = window.setInterval(updateServer, 60)
