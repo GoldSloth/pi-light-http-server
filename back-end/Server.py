@@ -24,7 +24,6 @@ class Server(BaseHTTPRequestHandler):
         
         ne = {"lights": ns, "CPU": getCPU(), "RAM": getRAM(), "TEMP": getTemp()}
         rn = json.dumps(ne)
-        print("Sending: " + rn)
         self.wfile.write(rn.encode("UTF-8"))
 
     def do_POST(self):

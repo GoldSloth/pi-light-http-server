@@ -49,7 +49,7 @@ function updateServer() {
 
 function updateClient() {
     PcktHandler.postMessage(["LOAD"])
-    
+
     updateLog("SENT", "GET")
 }
 
@@ -61,8 +61,9 @@ function messageResponder(msg) {
     var message = msg.data
     if (message[0] == "RCVD-GET") {
         var newStatus = message[1]
-        colourPicker.value = rgbToHex(newStatus.colour.red, newStatus.colour.green, newStatus.colour.blue)
-        brightnessControl.value = newStatus.brightness
+        var lightData = newStatus.lights
+        colourPicker.value = rgbToHex(lightData.colour.red, lightData.colour.green, lightData.colour.blue)
+        brightnessControl.value = lightData.brightness
         updateLog(message[0], JSON.stringify(message[1]))
 
     } else if (message[0] == "RCVD-POST") {
