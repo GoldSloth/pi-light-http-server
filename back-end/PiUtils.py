@@ -1,6 +1,20 @@
 import os
 import psutil
 
+def condenseString(x, target):
+    out = ""
+    tfound = False
+    for char in x:
+        if char == target:
+            if not tfound:
+                out += char
+                tfound = True
+        else:
+            out += char
+            tfound = False
+    return out
+
+
 def getTemp():
     temp = os.popen("vcgencmd measure_temp").readline()
     return str(temp).replace("temp=","")
@@ -8,8 +22,8 @@ def getTemp():
 
 def getRAM():
     result = os.popen('free').readlines()
-    rmem = str(result[1])[5:].split(" ")
-    rswap = str(result[2])[7:].split(" ")
+    rmem = condenseString(str(result[1])[5:], " ").split(" ")
+    rswap = condenseString(str(result[2])[7:], " ").split(" ")
     return {"mem": rmem, "swap": rswap}
 
 
