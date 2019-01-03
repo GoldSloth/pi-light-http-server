@@ -48,11 +48,8 @@ function updateServer() {
 }
 
 function updateClient() {
-    if (firstChange) {
-        PcktHandler.postMessage(["FLOAD"])
-    } else {
-        PcktHandler.postMessage(["LOAD"])
-    }
+    PcktHandler.postMessage(["LOAD"])
+    
     updateLog("SENT", "GET")
 }
 

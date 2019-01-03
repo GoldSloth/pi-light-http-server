@@ -31,12 +31,8 @@ function sendPOST(data) {
 }
 
 function handlePacket(message) {
-    if (message[0] == "LOAD" || message[0] == "FLOAD") {
-        if (message[0] == "FLOAD") {
-            var resp = sendGET(true)
-        } else {
-            var resp = sendGET(false)
-        }
+    if (message[0] == "LOAD") {
+        var resp = sendGET()
         if (resp == "ERR") {
             postMessage(["ERR", "XHR ERROR"])
         } else {

@@ -23,8 +23,9 @@ class Server(BaseHTTPRequestHandler):
         ns = self.lights.getState(True)
         
         ne = {"lights": ns, "CPU": getCPU(), "RAM": getRAM(), "TEMP": getTemp()}
-
-        self.wfile.write(json.dumps(ne).encode("UTF-8"))
+        rn = json.dumps(ne)
+        print("Sending: " + rn)
+        self.wfile.write(rn.encode("UTF-8"))
 
     def do_POST(self):
         content_length = int(self.headers['Content-Length'])
