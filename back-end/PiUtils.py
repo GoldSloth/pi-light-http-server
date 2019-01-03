@@ -1,4 +1,5 @@
 import os
+import psutil
 
 def getTemp():
     temp = os.popen("vcgencmd measure_temp").readline()
@@ -13,4 +14,4 @@ def getRAM():
 
 
 def getCPU():
-    return(str(os.popen("top -n1 | awk '/Cpu\(s\):/ {print}'").readline().strip()))
+    return(psutil.cpu_percent())
