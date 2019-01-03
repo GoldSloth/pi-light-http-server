@@ -22,9 +22,13 @@ def getTemp():
 
 def getRAM():
     result = os.popen('free').readlines()
-    rmem = condenseString(str(result[1]).replace("\n", "")[5:], " ").split(" ")
-    rswap = condenseString(str(result[2]).replace("\n", "")[7:], " ").split(" ")
-    return {"mem": rmem, "swap": rswap}
+    rmem = condenseString(str(result[1]).replace("\n", "")[5:], " ")
+    rswap = condenseString(str(result[2]).replace("\n", "")[7:], " ")
+    rimem = rmem.split(" ")
+    riswap = rswap.split(" ")
+    print(rmem)
+    print(ord(rmem[0]))
+    return {"mem": rimem, "swap": riswap}
 
 
 def getCPU():
