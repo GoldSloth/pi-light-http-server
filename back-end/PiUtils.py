@@ -2,11 +2,11 @@ import os
 
 def getTemp():
     temp = os.popen("vcgencmd measure_temp").readline()
-    return (temp.replace("temp=",""))
+    return str(list(temp.replace("temp=","")[0])
 
 
 def getRAM():
-    result = os.popen('free').split("\n")
+    result = str(list(os.popen('free'))[0]).split("\n")
     rmem = result[1]
     rswap = rmem = result[2]
     return {"mem": rmem, "swap": rswap}

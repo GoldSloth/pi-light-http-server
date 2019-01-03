@@ -1,20 +1,13 @@
-function sendGET(nc) {
+function sendGET() {
     var request = new XMLHttpRequest()
     try {
-        if (nc) {
-            request.open("GET", "http://192.168.1.75:8000/nc", false)
-        } else {
-            request.open("GET", "http://192.168.1.75:8000", false)
-        }
+
+        request.open("GET", "http://192.168.1.75:8000", false)
         request.setRequestHeader("Access-Control-Allow-Origin", "*")
         request.send()
         
         if (request.status == 200) {
-            if (request.responseText == "c") {
-                return "c"
-            } else {
-                return JSON.parse(request.responseText)
-            }
+            return JSON.parse(request.responseText)
         }
     } catch (e) {
         return "ERR"
@@ -46,8 +39,6 @@ function handlePacket(message) {
         }
         if (resp == "ERR") {
             postMessage(["ERR", "XHR ERROR"])
-        } else if (resp == "c") {
-            postMessage(["RCVD-GET", "c"])
         } else {
             postMessage(["RCVD-GET", resp])
         }

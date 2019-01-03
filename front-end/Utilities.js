@@ -50,7 +50,6 @@ function updateServer() {
 function updateClient() {
     if (firstChange) {
         PcktHandler.postMessage(["FLOAD"])
-        firstChange = false
     } else {
         PcktHandler.postMessage(["LOAD"])
     }
@@ -65,13 +64,10 @@ function messageResponder(msg) {
     var message = msg.data
     if (message[0] == "RCVD-GET") {
         var newStatus = message[1]
-        if (newStatus != "c") {
-            colourPicker.value = rgbToHex(newStatus.colour.red, newStatus.colour.green, newStatus.colour.blue)
-            brightnessControl.value = newStatus.brightness
-            updateLog(message[0], JSON.stringify(message[1]))
-        } else {
-            updateLog(message[0], "NO CHANGE")
-        }
+        colourPicker.value = rgbToHex(newStatus.colour.red, newStatus.colour.green, newStatus.colour.blue)
+        brightnessControl.value = newStatus.brightness
+        updateLog(message[0], JSON.stringify(message[1]))
+
     } else if (message[0] == "RCVD-POST") {
         updateLog(message[0], message[1])
     } else if (message[0] == "ERR") {

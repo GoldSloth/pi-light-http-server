@@ -1,6 +1,16 @@
 #consoleOutput {
     height: 800px;
-    width: 1200px;
+    width: 1000px;
     overflow: auto;
     background-color: #fafafa
+} 
+
+#brightness {
+    height: 20px;
+    width: 200px;
+}
+
+#colourPicker {
+    height: 200px;
+    width: 200px;
 }
