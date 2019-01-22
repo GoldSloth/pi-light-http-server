@@ -1,5 +1,16 @@
 from Server import *
-from LightHandler import LightStrip
-lights = LightStrip(30)
+# from LightHandler import LightStrip
+# lights = LightStrip(30)
+from Animations import *
+from queue import Queue
 
-run(lights)
+animations = [
+    progressiveSinWave,
+    totalSinWave
+]
+
+instructions = Queue()
+
+instructions.put("UPANIM")
+
+run(instructions, animations, defaultAnim)

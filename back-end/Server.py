@@ -1,6 +1,7 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
 from PiUtils import *
+from LightThreadWorker import LightWorker
 
 class Server(BaseHTTPRequestHandler):
     def __init__(self, lights, *args):
@@ -20,8 +21,8 @@ class Server(BaseHTTPRequestHandler):
     def do_GET(self):
         self._set_headers()
 
-        ns = self.lights.getState(True)
-        
+        # ns = self.lights.getState(True)
+        ns = ""
         ne = {"lights": ns, "CPU": getCPU(), "RAM": getRAM(), "TEMP": getTemp()}
         rn = json.dumps(ne)
         self.wfile.write(rn.encode("UTF-8"))
@@ -32,13 +33,14 @@ class Server(BaseHTTPRequestHandler):
 
         self._set_headers()
         if post_data[0:3] == "SET":
-            self.lights.setState(json.loads(post_data[3:]))
-            self.lights.update()
+            # self.lights.setState(json.loads(post_data[3:]))
+            # self.lights.update()
             self.wfile.write("STATUS OK".encode("UTF-8"))
         else:
             self.wfile.write("BAD STATUS".encode("UTF-8"))
 
-def run(lights, server_class=HTTPServer, port=8000):
+def run(instructions, animations, defaultAnim, server_class=HTTPServer, port=8000):
+    lights = LightWorker(instructions, defaultAnim, 4)
     def makeHandler(*args):
         Server(lights, *args)
     server_address = ('', port)
@@ -50,3 +52,4 @@ def run(lights, server_class=HTTPServer, port=8000):
         httpd.server_close()
         print("Closing server")
         lights.stop()
+        instructions.put("STOP")
