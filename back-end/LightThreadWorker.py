@@ -1,4 +1,4 @@
-from dotstart import Adafruit_DotStar
+from dotstar import Adafruit_DotStar
 import threading
 import time
 
