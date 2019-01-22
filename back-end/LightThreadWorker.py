@@ -32,8 +32,10 @@ class LightWorker(threading.Thread):
             self.run()
     
     def checkForUpdates(self):
+        
         if self.instructionQueue.qsize() != 0:
             instruction = self.instructionQueue.get()
+            print(instruction)
             if instruction[0] == "UPANIM":
                 self.animation = instruction[1]
             elif instruction[0] == "CHANGESPEED":
