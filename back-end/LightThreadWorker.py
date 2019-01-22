@@ -43,6 +43,7 @@ class LightWorker(threading.Thread):
                 self.stop()
     
     def stop(self):
+        print("STOPPING")
         self.strip.clear()
         self.strip.show()
         self.strip.close()
