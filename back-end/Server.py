@@ -41,6 +41,7 @@ class Server(BaseHTTPRequestHandler):
 
 def run(instructions, animations, defaultAnim, server_class=HTTPServer, port=8000):
     lights = LightWorker(instructions, defaultAnim, 4)
+    lights.start()
     def makeHandler(*args):
         Server(lights, *args)
     server_address = ('', port)
