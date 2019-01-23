@@ -40,7 +40,7 @@ class Server(BaseHTTPRequestHandler):
             self.wfile.write("BAD STATUS".encode("UTF-8"))
 
 def run(instructions, animations, defaultAnim, server_class=HTTPServer, port=8000):
-    lights = LightWorker(instructions, defaultAnim, 30)
+    lights = LightWorker(instructions, defaultAnim, 60)
     lights.start()
     def makeHandler(*args):
         Server(lights, *args)
