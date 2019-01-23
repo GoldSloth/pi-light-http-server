@@ -20,24 +20,19 @@ class LightWorker(threading.Thread):
 
 
     def run(self):
-        try:
-            self.checkForUpdates()
-            if not self.shouldStop:
-                for pixelNum in range(self.numpixels):
-                    colour = self.animation(pixelNum, self.waitTime)
-                    r = int(colour["red"] * 255)
-                    g = int(colour["green"] * 255)
-                    b = int(colour["blue"] * 255)
-                    self.strip.setPixelColor(pixelNum, g, r, b)
-                self.strip.show()
-                time.sleep(self.waitTime)
-                self.run()
-        except:
-            print(sys.exc_info()[0])
-            self.stop()
+        self.checkForUpdates()
+        if not self.shouldStop:
+            for pixelNum in range(self.numpixels):
+                colour = self.animation(pixelNum, self.waitTime)
+                r = int(colour["red"] * 255)
+                g = int(colour["green"] * 255)
+                b = int(colour["blue"] * 255)
+                self.strip.setPixelColor(pixelNum, g, r, b)
+            self.strip.show()
+            time.sleep(self.waitTime)
+            self.run()
 
     def checkForUpdates(self):
-        
         if self.instructionQueue.qsize() != 0:
             instruction = self.instructionQueue.get()
             print(instruction)

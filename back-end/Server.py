@@ -52,4 +52,4 @@ def run(instructions, animations, defaultAnim, server_class=HTTPServer, port=800
     except:
         httpd.server_close()
         print("Closing server")
-        instructions.put("STOP")
+        instructions.put(("STOP", None))
