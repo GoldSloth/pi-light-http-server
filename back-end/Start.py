@@ -11,6 +11,6 @@ animations = [
 
 instructions = Queue()
 
-instructions.put("UPANIM", progressiveSinWave)
+instructions.put(("UPANIM", progressiveSinWave))
 
 run(instructions, animations, defaultAnim)
