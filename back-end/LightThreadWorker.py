@@ -54,4 +54,5 @@ class LightWorker(threading.Thread):
         self.strip.clear()
         self.strip.show()
         self.strip.close()
+        self.join()
                 
