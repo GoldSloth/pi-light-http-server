@@ -36,8 +36,6 @@ class LightWorker(threading.Thread):
             print(sys.exc_info()[0])
             self.stop()
 
-        
-    
     def checkForUpdates(self):
         
         if self.instructionQueue.qsize() != 0:
