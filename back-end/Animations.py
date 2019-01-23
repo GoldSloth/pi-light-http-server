@@ -5,7 +5,7 @@ def progressiveSinWave(x, t):
     d = (math.sin((t + x) / 10) + 1) / 2
     col = colorsys.hsv_to_rgb(d, 1, 1)
     colObj = {"red": col[0], "green": col[1], "blue": col[2]}
-    print(colObj)
+    # print(colObj)
     return colObj
 
 def totalSinWave(x, t):
