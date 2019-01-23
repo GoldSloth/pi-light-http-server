@@ -21,8 +21,8 @@ class LightWorker(threading.Thread):
         self.frame = 0
 
     def run(self):
-        self.checkForUpdates()
-        if not self.shouldStop:
+        while not self.shouldStop:
+            self.checkForUpdates()
             for pixelNum in range(self.numpixels):
                 colour = self.animation(pixelNum, self.frame)
                 r = int(colour["red"] * 255)
@@ -32,7 +32,6 @@ class LightWorker(threading.Thread):
             self.strip.show()
             self.frame += 1
             time.sleep(self.waitTime)
-            self.run()
 
     def checkForUpdates(self):
         if self.instructionQueue.qsize() != 0:
