@@ -20,14 +20,16 @@ class LightWorker(threading.Thread):
 
         self.frame = 0
 
+        self.args = {}
+
     def run(self):
         while not self.shouldStop:
             self.checkForUpdates()
             for pixelNum in range(self.numpixels):
                 colour = self.animation(pixelNum, self.frame)
-                r = int(colour["red"] * 255)
-                g = int(colour["green"] * 255)
-                b = int(colour["blue"] * 255)
+                r = int(colour[0] * 255)
+                g = int(colour[1] * 255)
+                b = int(colour[2] * 255)
                 self.strip.setPixelColor(pixelNum, g, r, b)
             self.strip.show()
             self.frame += 1
@@ -39,8 +41,10 @@ class LightWorker(threading.Thread):
             print(instruction)
             if instruction[0] == "UPANIM":
                 self.animation = instruction[1]
-            elif instruction[0] == "CHANGESPEED":
+            elif instruction[0] == "CHANGEREFRESH":
                 self.waitTime = 1 / instruction[1]
+            elif instructions[0] == "CHANGEARGS":
+                self.args = instructions[1]
             elif instruction[0] == "STOP":
                 self.shouldStop = True
                 self.stop()

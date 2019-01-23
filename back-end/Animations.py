@@ -1,17 +1,18 @@
 import math
 import colorsys
 
-def progressiveSinWave(x, t):
-    d = (math.sin((t + x) / 30) + 1) / 2
-    col = colorsys.hsv_to_rgb(d, 1, 1)
-    colObj = {"red": col[0], "green": col[1], "blue": col[2]}
-    # print(colObj)
-    return colObj
+def progressiveSinWave(x, t, args):
+    d = (math.sin((t + x) * float(args["speed"])) + 1) / 2
+    col = colorsys.hsv_to_rgb(d, float(args["saturation"]), float(args["value"]))
+    return col
 
-def totalSinWave(x, t):
-    d = (math.sin(t / 40) + 1) / 2
-    col = colorsys.hsv_to_rgb(d, 1, 1)
-    return {"red": col[0], "green": col[1], "blue": col[2]}
+def totalSinWave(x, t, args):
+    d = (math.sin(t  * float(args["speed"])) + 1) / 2
+    col = colorsys.hsv_to_rgb(d, float(args["saturation"]), float(args["value"]))
+    return col
 
-def defaultAnim(x, t):
-    return {"red": 0.5, "green": 0.5, "blue": 0.5}
+def defaultAnim(x, t, args):
+    return (0.5, 0.5, 0.5)
+
+def constantColour(x, t, args):
+    return args["colour"]
