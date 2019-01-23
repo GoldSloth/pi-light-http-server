@@ -1,6 +1,7 @@
 from dotstar import Adafruit_DotStar
 import threading
 import time
+import sys
 
 class LightWorker(threading.Thread):
     def __init__(self, instructions, animation, updateFrequency):
@@ -19,17 +20,23 @@ class LightWorker(threading.Thread):
 
 
     def run(self):
-        self.checkForUpdates()
-        if not self.shouldStop:
-            for pixelNum in range(self.numpixels):
-                colour = self.animation(pixelNum, self.waitTime)
-                r = int(colour["red"] * 255)
-                g = int(colour["green"] * 255)
-                b = int(colour["blue"] * 255)
-                self.strip.setPixelColor(pixelNum, g, r, b)
-            self.strip.show()
-            time.sleep(self.waitTime)
-            self.run()
+        try:
+            self.checkForUpdates()
+            if not self.shouldStop:
+                for pixelNum in range(self.numpixels):
+                    colour = self.animation(pixelNum, self.waitTime)
+                    r = int(colour["red"] * 255)
+                    g = int(colour["green"] * 255)
+                    b = int(colour["blue"] * 255)
+                    self.strip.setPixelColor(pixelNum, g, r, b)
+                self.strip.show()
+                time.sleep(self.waitTime)
+                self.run()
+        except:
+            print(sys.exc_info()[0])
+            self.stop()
+
+        
     
     def checkForUpdates(self):
         
