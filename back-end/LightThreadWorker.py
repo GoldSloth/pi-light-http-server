@@ -26,7 +26,7 @@ class LightWorker(threading.Thread):
         while not self.shouldStop:
             self.checkForUpdates()
             for pixelNum in range(self.numpixels):
-                colour = self.animation(pixelNum, self.frame)
+                colour = self.animation(pixelNum, self.frame, self.args)
                 r = int(colour[0] * 255)
                 g = int(colour[1] * 255)
                 b = int(colour[2] * 255)
