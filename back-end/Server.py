@@ -38,21 +38,24 @@ class Server(BaseHTTPRequestHandler):
         post_data = self.rfile.read(content_length).decode("UTF-8")
 
         self._set_headers()
-        retData = json.loads(post_data[7:])
-        status = ""
-        if post_data[0:7] == "SETPROG":
-            if retData["newProg"] in self.animations:
-                self.currentProgram = retData["newProg"]
-                self.instructionQueue.put(("UPANIM", self.animations[retData["newProg"]["func"]], self.args))
-                status = "OK"  
-        elif post_data[0:7] == "SETARGS":
-            self.instructionQueue.put(("CHANGEARGS", retData))
-            status = "OK"
-        elif post_data[0:7] == "SETRFSH":
-            self.instructionQueue.put(("CHANGERFSH", int(retData["refresh"])))
-        else:
-            status = "BAD"
+        try:
+            retData = json.loads(post_data[7:])
 
+            status = ""
+            if post_data[0:7] == "SETPROG":
+                if retData["newProg"] in self.animations:
+                    self.currentProgram = retData["newProg"]
+                    self.instructionQueue.put(("UPANIM", self.animations[retData["newProg"]["func"]], self.args))
+                    status = "OK"  
+            elif post_data[0:7] == "SETARGS":
+                self.instructionQueue.put(("CHANGEARGS", retData))
+                status = "OK"
+            elif post_data[0:7] == "SETRFSH":
+                self.instructionQueue.put(("CHANGERFSH", int(retData["refresh"])))
+            else:
+                status = "BAD"
+        except:
+            status = "Data Invalid"
         self.wfile.write(status.encode("UTF-8"))
 
 def run(instructions, animations, defaultAnim, server_class=HTTPServer, port=8000):
