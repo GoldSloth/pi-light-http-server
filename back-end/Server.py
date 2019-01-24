@@ -9,6 +9,7 @@ class Server(BaseHTTPRequestHandler):
         self.animations = animations
         self.args = {}
         self.instructionQueue = instructions
+        self.currentProgram = ""
         super().__init__(*args)
         
     def _set_headers(self):
@@ -25,7 +26,7 @@ class Server(BaseHTTPRequestHandler):
         self._set_headers()
         ns = self.args
         ns = ""
-        ne = {"arguments": ns, "CPU": getCPU(), "RAM": getRAM(), "TEMP": getTemp()}
+        ne = {"arguments": ns, "CPU": getCPU(), "RAM": getRAM(), "TEMP": getTemp(), "PROGRAM": self.currentProgram}
         if self.path.endswith("fetchAnimations"):
             ne["animations"] = self.animations
 
@@ -41,13 +42,16 @@ class Server(BaseHTTPRequestHandler):
         status = ""
         if post_data[0:7] == "SETPROG":
             if retData["newProg"] in self.animations:
+                self.currentProgram = retData["newProg"]
                 self.instructionQueue.put(("UPANIM", self.animations[retData["newProg"]["func"]], self.args))
+                status = "OK"  
         elif post_data[0:7] == "CHANGEARGS":
             self.instructionQueue.put(("CHANGEARGS", retData))
-            self.wfile.write("STATUS OK".encode("UTF-8"))
+            status = "OK"
         elif post_data[0:7] == "CHANGERFSH":
+            self.instructionQueue.put(("CHANGERFSH", int(retData["refresh"]))
         else:
-            self.wfile.write("BAD STATUS".encode("UTF-8"))
+            status = "BAD"
 
         self.wfile.write(status.encode("UTF-8"))
 

@@ -41,10 +41,10 @@ class LightWorker(threading.Thread):
             print(instruction)
             if instruction[0] == "UPANIM":
                 self.animation = instruction[1]
-            elif instruction[0] == "CHANGEREFRESH":
+            elif instruction[0] == "CHANGERFSH":
                 self.waitTime = 1 / instruction[1]
-            elif instructions[0] == "CHANGEARGS":
-                self.args = instructions[1]
+            elif instruction[0] == "CHANGEARGS":
+                self.args = instruction[1]
             elif instruction[0] == "STOP":
                 self.shouldStop = True
                 self.stop()
