@@ -49,7 +49,7 @@ class Server(BaseHTTPRequestHandler):
             self.instructionQueue.put(("CHANGEARGS", retData))
             status = "OK"
         elif post_data[0:7] == "CHANGERFSH":
-            self.instructionQueue.put(("CHANGERFSH", int(retData["refresh"]))
+            self.instructionQueue.put(("CHANGERFSH", int(retData["refresh"])))
         else:
             status = "BAD"
 
