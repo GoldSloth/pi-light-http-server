@@ -45,10 +45,11 @@ class Server(BaseHTTPRequestHandler):
             if post_data[0:7] == "SETPROG":
                 if retData["newProg"] in self.animations:
                     self.currentProgram = retData["newProg"]
-                    self.instructionQueue.put(("UPANIM", self.animations[retData["newProg"]["func"]], self.args))
+                    self.instructionQueue.put(("UPANIM", self.animations[retData["newProg"]]["func"], self.args))
                     status = "OK"  
             elif post_data[0:7] == "SETARGS":
                 self.instructionQueue.put(("CHANGEARGS", retData))
+                self.args = retData
                 status = "OK"
             elif post_data[0:7] == "SETRFSH":
                 self.instructionQueue.put(("CHANGERFSH", int(retData["refresh"])))
