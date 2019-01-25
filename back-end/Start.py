@@ -12,6 +12,11 @@ animations = {
             "speed": "number",
             "saturation": "number",
             "value": "number"
+        },
+        "defaultArgs": {
+            "speed": 30,
+            "saturation": 0.5,
+            "value": 0.5
         }
     },
     "tSinWave": {
@@ -21,12 +26,20 @@ animations = {
             "speed": "number",
             "saturation": "number",
             "value": "number"
+        },
+        "defaultArgs": {
+            "speed": 30,
+            "saturation": 0.5,
+            "value": 0.5
         }
     },
     "constantColour": {
         "func": constantColour,
         "arguments": {
             "colour": "colour"
+        },
+        "defaultArgs": {
+            "colour": (0.5, 0.5, 0.5)
         }
     }
 }

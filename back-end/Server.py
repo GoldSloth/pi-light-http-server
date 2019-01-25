@@ -45,6 +45,7 @@ class Server(BaseHTTPRequestHandler):
             if post_data[0:7] == "SETPROG":
                 if retData["newProg"] in self.animations:
                     self.currentProgram = retData["newProg"]
+                    self.args = self.animations[retData["newProg"]]["defaultArgs"]
                     self.instructionQueue.put(("UPANIM", self.animations[retData["newProg"]]["func"], self.args))
                     status = "OK"  
             elif post_data[0:7] == "SETARGS":
