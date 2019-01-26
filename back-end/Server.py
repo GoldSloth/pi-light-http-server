@@ -2,18 +2,15 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
 from PiUtils import *
 from LightThreadWorker import LightWorker
+from LightState import LightState
 
 class Server(BaseHTTPRequestHandler):
-    def __init__(self, lights, animations, instructions, currentArgs, currentProgram, currentRefreshRate, *args):
+    def __init__(self, lights, animations, instructions, ls, *args):
         # Important: A new handler is created for every request.
         self.lights = lights
         self.animations = animations
-        self.animArgs = currentArgs
         self.instructionQueue = instructions
-        self.currentProgram = currentProgram
-        self.currentRefreshRate = currentRefreshRate
-        print(id(self.currentProgram))
-        print(id(currentProgram))
+        self.ls = ls
         # *laughs in pass by reference*
         super().__init__(*args)
         
@@ -28,10 +25,8 @@ class Server(BaseHTTPRequestHandler):
         self._set_headers()
 
     def do_GET(self):
-        print(self.currentProgram)
-        print(id(self.currentProgram))
         self._set_headers()
-        ne = {"arguments": self.animArgs, "CPU": getCPU(), "RAM": getRAM(), "TEMP": getTemp(), "PROGRAM": self.currentProgram}
+        ne = {"arguments": self.ls.args, "CPU": getCPU(), "RAM": getRAM(), "TEMP": getTemp(), "PROGRAM": self.ls.program}
         if self.path.endswith("fetchAnimations"):
             ne["animations"] = self.animations
 
@@ -49,18 +44,19 @@ class Server(BaseHTTPRequestHandler):
             status = ""
             if post_data[0:7] == "SETPROG":
                 if retData["newProg"] in self.animations:
-                    self.currentProgram = retData["newProg"]
-                    print(self.currentProgram)
-                    print(id(self.currentProgram))
-                    self.animArgs = self.animations[retData["newProg"]]["defaultArgs"]
-                    self.instructionQueue.put(("UPANIM", self.animations[retData["newProg"]]["func"], self.animArgs))
+                    self.ls.program = retData["newProg"]
+                    self.ls.args = self.animations[retData["newProg"]]["defaultArgs"]
+                    self.instructionQueue.put(("UPANIM", self.animations[retData["newProg"]]["func"], self.ls.args))
                     status = "OK"  
+                else:
+                    status = "INVALID PROGRAM"
             elif post_data[0:7] == "SETARGS":
                 self.instructionQueue.put(("CHANGEARGS", retData))
-                self.animArgs = retData
+                self.ls.args = retData
                 status = "OK"
             elif post_data[0:7] == "SETRFSH":
                 self.instructionQueue.put(("CHANGERFSH", int(retData["refresh"])))
+                self.ls.refreshRate = int(retData["refresh"])
             else:
                 status = "BAD"
         except:
@@ -71,11 +67,9 @@ def run(instructions, animations, defaultAnim, server_class=HTTPServer, port=800
     # Some funny buisiness with defining everything here, but sure.
     lights = LightWorker(instructions, defaultAnim, 60)
     lights.start()
-    currentProgram = ""
-    currentArgs = {}
-    currentRefreshRate = 30
+    ls = LightState()
     def makeHandler(*args):
-        Server(lights, animations, instructions,currentArgs, currentProgram, currentRefreshRate, *args)
+        Server(lights, animations, instructions, ls, *args)
     server_address = ('', port)
     httpd = server_class(server_address, makeHandler)
     print('Starting httpd...')
