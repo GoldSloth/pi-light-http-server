@@ -23,6 +23,7 @@ class Server(BaseHTTPRequestHandler):
         self._set_headers()
 
     def do_GET(self):
+        print(self.currentProgram)
         self._set_headers()
         ne = {"arguments": self.animArgs, "CPU": getCPU(), "RAM": getRAM(), "TEMP": getTemp(), "PROGRAM": self.currentProgram}
         if self.path.endswith("fetchAnimations"):
