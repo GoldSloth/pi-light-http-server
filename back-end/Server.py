@@ -12,6 +12,8 @@ class Server(BaseHTTPRequestHandler):
         self.instructionQueue = instructions
         self.currentProgram = currentProgram
         self.currentRefreshRate = currentRefreshRate
+        print(id(self.currentProgram))
+        print(id(currentProgram))
         # *laughs in pass by reference*
         super().__init__(*args)
         
