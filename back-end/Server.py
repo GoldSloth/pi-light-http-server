@@ -26,7 +26,15 @@ class Server(BaseHTTPRequestHandler):
 
     def do_GET(self):
         self._set_headers()
-        ne = {"arguments": self.ls.args, "CPU": getCPU(), "RAM": getRAM(), "TEMP": getTemp(), "program": self.ls.program, "brightness": self.ls.brightness}
+        ne = {
+            "arguments": self.ls.args,
+            "CPU": getCPU(),
+            "RAM": getRAM(),
+            "TEMP": getTemp(),
+            "program": self.ls.program,
+            "brightness": self.ls.brightness,
+            "refresh": self.ls.refreshRate
+        }
         if self.path.endswith("fetchAnimations"):
             ne["animations"] = self.animations
 
