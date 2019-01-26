@@ -49,6 +49,9 @@ class LightWorker(threading.Thread):
             elif instruction[0] == "STOP":
                 self.shouldStop = True
                 self.stop()
+            elif instruction[0] == "CHANGEBRIT":
+                self.strip.setBrightness(instruction[1])
+                self.strip.show()
     
     def stop(self):
         print("STOPPING")

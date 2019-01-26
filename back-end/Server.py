@@ -40,23 +40,34 @@ class Server(BaseHTTPRequestHandler):
         self._set_headers()
         try:
             retData = json.loads(post_data[7:])
-
+            verb = post_data[0:7]
             status = ""
-            if post_data[0:7] == "SETPROG":
+            if verb == "SETPROG":
                 if retData["newProg"] in self.animations:
                     self.ls.program = retData["newProg"]
                     self.ls.args = self.animations[retData["newProg"]]["defaultArgs"]
-                    self.instructionQueue.put(("UPANIM", self.animations[retData["newProg"]]["func"], self.ls.args))
+                    self.instructionQueue.put(
+                        ("UPANIM", self.animations[retData["newProg"]]["func"], self.ls.args)
+                    )
                     status = "OK"  
                 else:
                     status = "INVALID PROGRAM"
-            elif post_data[0:7] == "SETARGS":
-                self.instructionQueue.put(("CHANGEARGS", retData))
+            elif verb == "SETARGS":
+                self.instructionQueue.put(
+                    ("CHANGEARGS", retData)
+                )
                 self.ls.args = retData
                 status = "OK"
-            elif post_data[0:7] == "SETRFSH":
-                self.instructionQueue.put(("CHANGERFSH", int(retData["refresh"])))
+            elif verb == "SETRFSH":
+                self.instructionQueue.put(
+                    ("CHANGERFSH", int(retData["refresh"]))
+                )
                 self.ls.refreshRate = int(retData["refresh"])
+            elif verb == "SETBRIT":
+                self.instructionQueue.put(
+                    ("CHANGEBRIT", int(retData["brightness"]))
+                )
+                self.ls.brightness = retData["brightness"]
             else:
                 status = "BAD"
         except:
