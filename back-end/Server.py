@@ -4,12 +4,15 @@ from PiUtils import *
 from LightThreadWorker import LightWorker
 
 class Server(BaseHTTPRequestHandler):
-    def __init__(self, lights, animations, instructions,*args):
+    def __init__(self, lights, animations, instructions, currentArgs, currentProgram, currentRefreshRate, *args):
+        # Important: A new handler is created for every request.
         self.lights = lights
         self.animations = animations
-        self.animArgs = {}
+        self.animArgs = currentArgs
         self.instructionQueue = instructions
-        self.currentProgram = ""
+        self.currentProgram = currentProgram
+        self.currentRefreshRate = currentRefreshRate
+        # *laughs in pass by reference*
         super().__init__(*args)
         
     def _set_headers(self):
@@ -62,10 +65,14 @@ class Server(BaseHTTPRequestHandler):
         self.wfile.write(status.encode("UTF-8"))
 
 def run(instructions, animations, defaultAnim, server_class=HTTPServer, port=8000):
+    # Some funny buisiness with defining everything here, but sure.
     lights = LightWorker(instructions, defaultAnim, 60)
     lights.start()
+    currentProgram = ""
+    currentArgs = {}
+    currentRefreshRate = 30
     def makeHandler(*args):
-        Server(lights, animations, instructions,*args)
+        Server(lights, animations, instructions,currentArgs, currentProgram, currentRefreshRate, *args)
     server_address = ('', port)
     httpd = server_class(server_address, makeHandler)
     print('Starting httpd...')
