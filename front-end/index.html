@@ -1,41 +1,63 @@
 <!doctype html>
 
 <html lang="en">
-<head>
-    <meta charset="utf-8">
+    <head>
+        <meta charset="utf-8">
 
-    <title>Light Controller</title>
-    <link href="main.css" rel="stylesheet">
-</head>
+        <title>Light Controller</title>
+        <link href="main.css" rel="stylesheet">
+    </head>
 
-<body>
-    <div>
-        <label for="colourPicker">Colour: </label>
-        <input type="color" id="colourPicker" name="colourPicker" value="#66ff44">
-    </div>
-    <div>
-        <label for="brightness">Brightness: </label>
-        <input type="range" id="brightness" name="brightness" min="0" max="1" value="0.5" step="0.001">
-    </div>
-    <div>
-        <fieldset>
-        <label>CPU Usage</label>
-        <output id="cpuUsage">EEE</output>
-        </fieldset>
-        <fieldset>
-        <label>Memory</label>
-        <label>RAM</label>
-        <output id="ramUsage">EEE</output>
-        <label>Swap</label>
-        <output id="swapUsage">EEE</output>
-        </fieldset>
-        <fieldset>
-        <label>CPU Temp</label>
-        <output id="cpuTemp">EEE</output>
-    </fieldset>
-    </div>
-    <div id="consoleOutput" style.backgroundColor="#667766"></div>
-    <script src="Utilities.js"></script>
-    <script src="front-end.js"></script>
-</body>
+    <body>
+		<h1>Dotstar Controller</h1>
+		<div class="verticalBoxes">
+			<div class="horizontalBoxes">
+				<div class="verticalBoxes">
+					<div class="verticalBoxes" id="connectionBox">
+						<h2>Connection</h2>
+						<form class="formBoxes">
+							<label for="ipInput">URL:</label>
+							<input type="url" id="ipInput">
+							<input type="button" value="Connect" id="connectButton">
+						</form>
+						<form class="formBoxes">
+							<label>Status:</label>
+							<output id="connectionStatus">Not connected</output>
+						</form>
+					</div>
+					<div class="verticalBoxes" id="animationsBox">
+						<h2>Animations</h2>
+						<form class="formBoxes">
+							<label for="animationSelector">Program:</label>
+							<select id="animationSelector">
+								<option value="test">Test</option>
+							</select>
+						</form>
+						<form class="formBoxes">
+							<label for="refreshRateSelection">Refresh Rate:</label>
+							<input type="range" id="refreshRateSelection" min="0.1" max="60" step="0.1">
+						</form>
+					</div>
+				</div>
+				<div class="verticalBoxes" id="systemInformationBox">
+					<h2>System Information</h2>
+				</div>
+			</div>
+			<div class="horizontalBoxes">
+				<div class="verticalBoxes" id="programArgContainer">
+					<h2>Program Arguments</h2>
+					<div class="verticalBoxes" id="argContainer">
+						<h4>Test</h4>
+						<h4>Test</h4>
+						<h4>Test</h4>
+					</div>
+				</div>
+				<div class="verticalBoxes" id="undecidedBox">
+					<h2>Undecided Box</h2>
+				</div>
+			</div>
+		</div>
+        <script src="Utilities.js"></script>
+        <script src="front-end.js"></script>
+    </body>
 </html>

@@ -1,20 +1,93 @@
-#consoleOutput {
-    height: 400px;
-    width: 1200px;
-    overflow: auto;
-    background-color: #fafafa
-} 
+/* Variable definitions */
 
-#brightness {
-    height: 40px;
-    width: 600px;
+:root {
+    --palette-0: #00ff10; /* rgb(0,255,16) */
+    --palette-1: #33e33c; /* rgb(51,227,60) */
+    --palette-2: #54c558; /* rgb(84,197,88) */
+    --palette-3: #64a364; /* rgb(100,163,100) */
+    --palette-4: #617d60; /* rgb(97,125,96) */
+    --palette-5: #4d544c; /* rgb(77,84,76) */
+}
+  
+
+/* Whole elements first */
+h1, h2 {
+    background-color: var(--palette-1);
+    color: var(--palette-5);
+    text-align: left;
+    border-style: solid;
+    border-color: var(--palette-2);
+    border-radius: 6px;
+    border-width: 4px;
+    margin-block-start: 5px;
+    margin-block-end: 5px;
 }
 
-#colourPicker {
-    height: 100px;
-    width: 200px;
+h1 {
+    font-size: 50px;
+    text-align: center !important;
+}
+
+h2 {
+    font-size: 20px;
+}
+
+label, input, output{
+    margin: 2px;
+    padding: 2px;
+}
+
+select {
+    margin: 4px;
 }
 
 output {
-    background-color: #efefef
+    background-color: var(--palette-4);
+    border-radius: 3px;
+}
+
+
+/* Classes second */
+
+.horizontalBoxes, .verticalBoxes, .formBoxes{
+    display: flex;
+    border-color: var(--palette-4);
+    border-style: solid;
+    border-width: 2px;
+    background-color: var(--palette-3);
+    border-radius: 6px
+}
+
+.verticalBoxes {
+    flex-direction: column;
+    margin: 3px;
+    padding: 4px;
+}
+
+.horizontalBoxes, .formBoxes {
+    flex-direction: row;
+    margin: 2px;
+    padding: 2px;
+}
+
+.formBoxes {
+    border-style: none;
+}
+
+/* Individual elements last */
+
+#connectionBox {
+    flex-grow: 1;
+}
+
+#systemInformationBox {
+    flex-grow: 3;
+}
+
+#programArgContainer {
+    flex-grow: 1;
+}
+
+#undecidedBox {
+    flex-grow: 9;
 }
