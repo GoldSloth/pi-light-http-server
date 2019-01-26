@@ -7,7 +7,7 @@ class Server(BaseHTTPRequestHandler):
     def __init__(self, lights, animations, instructions,*args):
         self.lights = lights
         self.animations = animations
-        self.args = {}
+        self.animArgs = {}
         self.instructionQueue = instructions
         self.currentProgram = ""
         super().__init__(*args)
@@ -24,7 +24,7 @@ class Server(BaseHTTPRequestHandler):
 
     def do_GET(self):
         self._set_headers()
-        ns = self.args
+        ns = self.animArgs
         ne = {"arguments": ns, "CPU": getCPU(), "RAM": getRAM(), "TEMP": getTemp(), "PROGRAM": self.currentProgram}
         if self.path.endswith("fetchAnimations"):
             ne["animations"] = self.animations
@@ -44,12 +44,12 @@ class Server(BaseHTTPRequestHandler):
             if post_data[0:7] == "SETPROG":
                 if retData["newProg"] in self.animations:
                     self.currentProgram = retData["newProg"]
-                    self.args = self.animations[retData["newProg"]]["defaultArgs"]
-                    self.instructionQueue.put(("UPANIM", self.animations[retData["newProg"]]["func"], self.args))
+                    self.animArgs = self.animations[retData["newProg"]]["defaultArgs"]
+                    self.instructionQueue.put(("UPANIM", self.animations[retData["newProg"]]["func"], self.animArgs))
                     status = "OK"  
             elif post_data[0:7] == "SETARGS":
                 self.instructionQueue.put(("CHANGEARGS", retData))
-                self.args = retData
+                self.animArgs = retData
                 status = "OK"
             elif post_data[0:7] == "SETRFSH":
                 self.instructionQueue.put(("CHANGERFSH", int(retData["refresh"])))
