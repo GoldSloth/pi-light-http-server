@@ -4,14 +4,15 @@ from PiUtils import *
 from LightThreadWorker import LightWorker
 
 class Server(BaseHTTPRequestHandler):
+    lights = lights
+    animations = animations
+    animArgs = currentArgs
+    instructionQueue = instructions
+    currentProgram = currentProgram
+    currentRefreshRate = currentRefreshRate
     def __init__(self, lights, animations, instructions, currentArgs, currentProgram, currentRefreshRate, *args):
         # Important: A new handler is created for every request.
-        self.lights = lights
-        self.animations = animations
-        self.animArgs = currentArgs
-        self.instructionQueue = instructions
-        self.currentProgram = currentProgram
-        self.currentRefreshRate = currentRefreshRate
+
         # *laughs in pass by reference*
         super().__init__(*args)
         
