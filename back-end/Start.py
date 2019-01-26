@@ -14,9 +14,9 @@ animations = {
             "value": "number"
         },
         "defaultArgs": {
-            "speed": 30,
-            "saturation": 0.5,
-            "value": 0.5
+            "speed": 0.05,
+            "saturation": 1.0,
+            "value": 1.0
         }
     },
     "tSinWave": {
@@ -28,9 +28,9 @@ animations = {
             "value": "number"
         },
         "defaultArgs": {
-            "speed": 30,
-            "saturation": 0.5,
-            "value": 0.5
+            "speed": 0.01,
+            "saturation": 1.0,
+            "value": 1.0
         }
     },
     "constantColour": {

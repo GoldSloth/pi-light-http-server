@@ -24,8 +24,7 @@ class Server(BaseHTTPRequestHandler):
 
     def do_GET(self):
         self._set_headers()
-        ns = self.animArgs
-        ne = {"arguments": ns, "CPU": getCPU(), "RAM": getRAM(), "TEMP": getTemp(), "PROGRAM": self.currentProgram}
+        ne = {"arguments": self.animArgs, "CPU": getCPU(), "RAM": getRAM(), "TEMP": getTemp(), "PROGRAM": self.currentProgram}
         if self.path.endswith("fetchAnimations"):
             ne["animations"] = self.animations
 
@@ -44,7 +43,9 @@ class Server(BaseHTTPRequestHandler):
             if post_data[0:7] == "SETPROG":
                 if retData["newProg"] in self.animations:
                     self.currentProgram = retData["newProg"]
+                    print(self.currentProgram)
                     self.animArgs = self.animations[retData["newProg"]]["defaultArgs"]
+                    print(self.animArgs)
                     self.instructionQueue.put(("UPANIM", self.animations[retData["newProg"]]["func"], self.animArgs))
                     status = "OK"  
             elif post_data[0:7] == "SETARGS":
