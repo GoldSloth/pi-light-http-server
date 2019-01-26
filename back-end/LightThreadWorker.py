@@ -41,6 +41,7 @@ class LightWorker(threading.Thread):
             print(instruction)
             if instruction[0] == "UPANIM":
                 self.animation = instruction[1]
+                self.args = instruction[2]
             elif instruction[0] == "CHANGERFSH":
                 self.waitTime = 1 / instruction[1]
             elif instruction[0] == "CHANGEARGS":
