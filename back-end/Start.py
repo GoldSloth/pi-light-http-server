@@ -9,34 +9,68 @@ animations = {
         "func": progressiveSinWave,
         "title": "Moving sin wave",
         "arguments": {
-            "speed": "number",
-            "saturation": "number",
-            "value": "number"
+            "speed": {
+                "name": "Speed",
+                "type": "number",
+                "min": 0.001,
+                "max": 10,
+            },
+            "saturation": {
+                "name": "Saturation",
+                "type": "number",
+                "min": 0,
+                "max": 1,
+            },
+            "value": {
+                "name": "Value",
+                "type": "number",
+                "min": 0,
+                "max": 1,
+            }
         },
         "defaultArgs": {
             "speed": 0.05,
-            "saturation": 1.0,
-            "value": 1.0
+            "saturation": 1,
+            "value": 1
         }
     },
     "tSinWave": {
         "func": totalSinWave,
         "title": "Whole strip sin wave",
         "arguments": {
-            "speed": "number",
-            "saturation": "number",
-            "value": "number"
+            "speed": {
+                "name": "Speed",
+                "type": "number",
+                "min": 0.001,
+                "max": 10,
+            },
+            "saturation": {
+                "name": "Saturation",
+                "type": "number",
+                "min": 0,
+                "max": 1,
+            },
+            "value": {
+                "name": "Value",
+                "type": "number",
+                "min": 0,
+                "max": 1,
+            }
         },
         "defaultArgs": {
-            "speed": 0.01,
-            "saturation": 1.0,
-            "value": 1.0
+            "speed": 0.05,
+            "saturation": 1,
+            "value": 1
         }
     },
     "constantColour": {
         "func": constantColour,
+        "title": "Constant Colour",
         "arguments": {
-            "colour": "colour"
+            "colour": {
+                "type": "colour",
+                "name": "Colour"
+            }
         },
         "defaultArgs": {
             "colour": (0.5, 0.5, 0.5)

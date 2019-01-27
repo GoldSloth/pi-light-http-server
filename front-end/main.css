@@ -58,16 +58,18 @@ output {
     border-radius: 6px
 }
 
-.verticalBoxes {
-    flex-direction: column;
-    margin: 3px;
-    padding: 4px;
+.verticalBoxes, .horizontalBoxes {
+    margin: 2px;
+    padding: 2px;
 }
 
 .horizontalBoxes, .formBoxes {
     flex-direction: row;
-    margin: 2px;
-    padding: 2px;
+
+}
+
+.verticalBoxes {
+    flex-direction: column;
 }
 
 .formBoxes {
