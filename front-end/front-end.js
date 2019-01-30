@@ -70,5 +70,6 @@ let test = {
     }
 }
 
-dh._furnishAnimations(test)
-dh._furnishArguments(test)
+dh.animationData = test
+console.log(dh)
+dh.updatePage()
