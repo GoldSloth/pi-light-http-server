@@ -86,7 +86,7 @@ def run(instructions, animations, defaultAnim, server_class=HTTPServer, port=800
     # Some funny buisiness with defining everything here, but sure.
     lights = LightWorker(instructions, defaultAnim, 60)
     lights.start()
-    ls = LightState(program=defaultAnim)
+    ls = LightState(program="default")
     def makeHandler(*args):
         Server(lights, animations, instructions, ls, *args)
     server_address = ('', port)
