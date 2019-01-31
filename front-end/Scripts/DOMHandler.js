@@ -7,7 +7,7 @@ function isEmpty(obj) {
 }
 
 class DOMHandler {
-    constructor() {
+    constructor(ConnectionHandler) {
         // Connection box
         this.urlEntry = document.getElementById("ipInput") // Input
         this.urlSubmit = document.getElementById("connectButton") // Button
@@ -31,6 +31,8 @@ class DOMHandler {
 
         this.currentAnimation = animationSelector.value
 
+        this.ConnectionHandler = ConnectionHandler
+
         this.animationRefreshInput.addEventListener("input", function() {
             this.refreshIsChanged = true;
             this.refreshRate = this.animationRefreshInput.value
@@ -51,6 +53,10 @@ class DOMHandler {
             "number": "range",
             "colour": "color"
         }
+
+        this.urlSubmit.addEventListener("click", function() {
+            this.ConnectionHandler.start(this.urlEntry.value)
+        }.bind(this))
     }
 
     _removeChildren(node) {
@@ -115,6 +121,10 @@ class DOMHandler {
                 this.argumentFields[input].value = data[input]
             }
         }
+    }
+
+    updateProgram(newProgram) {
+        this.animationSelector.value = newProgram
     }
 
     // Should be called to update the inputStatus property of the object

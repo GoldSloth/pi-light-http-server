@@ -1,4 +1,7 @@
-let dh = new DOMHandler()
+let dh
+let ph
+dh = new DOMHandler(ph)
+ph = new PacketHandler(dh)
 let test = {
     "mSinWave": {
         "title": "Moving sin wave",
