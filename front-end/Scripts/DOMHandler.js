@@ -69,7 +69,6 @@ class DOMHandler {
 
     _furnishAnimations() {
         if (!isEmpty(this.animationData)) {
-            console.log("eek")
             this._removeChildren(this.animationSelector)
             for (var animation in this.animationData) {
                 let x = document.createElement("option")
@@ -82,8 +81,7 @@ class DOMHandler {
 
     _furnishArguments() {
         if (!isEmpty(this.animationData)) {
-            let currentAnimation = this.animationSelector.value
-            let args = this.animationData[currentAnimation].arguments
+            let args = this.animationData[this.currentAnimation].arguments
             this.argumentFields = {}
             this._removeChildren(this.argumentsContainer)
             for (const [key, value] of Object.entries(args)) {

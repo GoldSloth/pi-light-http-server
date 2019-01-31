@@ -25,8 +25,8 @@ class PacketHandler {
             this.PageHandler.updateArgs(status["arguments"])
         }
 
-        window.setInterval(500, this._getData.bind(this))
-        window.setInterval(500, this._sendData.bind(this))
+        setInterval(this._getData.bind(this), 1000)
+        setInterval(this._sendData.bind(this), 1000)
     }
 
     _sendData() {
