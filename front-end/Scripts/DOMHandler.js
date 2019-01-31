@@ -7,7 +7,7 @@ function isEmpty(obj) {
 }
 
 class DOMHandler {
-    constructor(ConnectionHandler) {
+    constructor() {
         // Connection box
         this.urlEntry = document.getElementById("ipInput") // Input
         this.urlSubmit = document.getElementById("connectButton") // Button
@@ -30,8 +30,6 @@ class DOMHandler {
         this.animationIsChanged = true;
 
         this.currentAnimation = animationSelector.value
-
-        this.ConnectionHandler = ConnectionHandler
 
         this.animationRefreshInput.addEventListener("input", function() {
             this.refreshIsChanged = true;
@@ -57,6 +55,10 @@ class DOMHandler {
         this.urlSubmit.addEventListener("click", function() {
             this.ConnectionHandler.start(this.urlEntry.value)
         }.bind(this))
+    }
+
+    linkConnectionHandler(ConnectionHandler) {
+        this.ConnectionHandler = ConnectionHandler
     }
 
     _removeChildren(node) {

@@ -38,7 +38,7 @@ class Server(BaseHTTPRequestHandler):
         if self.path.endswith("fetchAnimations"):
             ne["animations"] = self.animations
 
-        rn = json.dumps(ne)
+        rn = json.dumps(ne, default= lambda o: '<->')
         self.wfile.write(rn.encode("UTF-8"))
 
     def do_POST(self):

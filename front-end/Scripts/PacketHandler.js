@@ -1,64 +1,68 @@
 class PacketHandler {
-    constructor(PageHandler) {
-        this.PageHandler = PageHandler
+    constructor() {
         this.ip = ""
         this.lastProgram = ""
+    }
+
+    linkPageHandler(PageHandler) {
+        this.PageHandler = PageHandler
     }
 
     start(ip) {
         this.ip = ip
         let request = new XMLHttpRequest()
-        request.open("GET", this.ip+"/fetchanimations", false)
+        request.open("GET", this.ip+"/fetchAnimations", false)
         request.setRequestHeader("Access-Control-Allow-Origin", "*")
         request.send()
 
-        if (request.status = 200) {
+        if (request.status == 200) {
             let status = JSON.parse(request.responseText)
-            PageHandler.animationData = status["animations"]
-            PageHandler.updatePage()
+            console.log(request.responseText)
+            this.PageHandler.animationData = status["animations"]
+            this.PageHandler.updatePage()
             this.lastProgram = status["program"]
-            PageHandler.updateProgram(status["program"])
-            PageHandler.updateArgs(status["arguments"])
+            this.PageHandler.updateProgram(status["program"])
+            this.PageHandler.updateArgs(status["arguments"])
         }
 
         window.setInterval(500, this._getData.bind(this))
-        window.setInterval(500, this._setData.bind(this))
+        window.setInterval(500, this._sendData.bind(this))
     }
 
     _sendData() {
-        if (PageHandler.animationIsChanged) {
+        if (this.PageHandler.animationIsChanged) {
             let request = new XMLHttpRequest()
             request.open("POST", this.ip, false)
             request.setRequestHeader("Access-Control-Allow-Origin", "*")
             request.setRequestHeader("Content-Type", "text/plain")
-            request.send("SETPROG"+JSON.stringify({"newProg": PageHandler.currentAnimation}))
-            PageHandler.animationIsChanged = false
+            request.send("SETPROG"+JSON.stringify({"newProg": this.PageHandler.currentAnimation}))
+            this.PageHandler.animationIsChanged = false
         }
 
-        if (PageHandler.refreshIsChanged) {
+        if (this.PageHandler.refreshIsChanged) {
             let request = new XMLHttpRequest()
             request.open("POST", this.ip, false)
             request.setRequestHeader("Access-Control-Allow-Origin", "*")
             request.setRequestHeader("Content-Type", "text/plain")
-            request.send("SETRFSH"+JSON.stringify({"refresh": PageHandler.refreshRate}))
-            PageHandler.refreshIsChanged = false
+            request.send("SETRFSH"+JSON.stringify({"refresh": this.PageHandler.refreshRate}))
+            this.PageHandler.refreshIsChanged = false
         }
 
-        if (PageHandler.brightnessIsChanged) {
+        if (this.PageHandler.brightnessIsChanged) {
             let request = new XMLHttpRequest()
             request.open("POST", this.ip, false)
             request.setRequestHeader("Access-Control-Allow-Origin", "*")
             request.setRequestHeader("Content-Type", "text/plain")
-            request.send("SETBRIT"+JSON.stringify({"brightness": PageHandler.brightness}))
-            PageHandler.brightnessIsChanged = false
+            request.send("SETBRIT"+JSON.stringify({"brightness": this.PageHandler.brightness}))
+            this.PageHandler.brightnessIsChanged = false
         }
 
         let request = new XMLHttpRequest()
         request.open("POST", this.ip, false)
         request.setRequestHeader("Access-Control-Allow-Origin", "*")
         request.setRequestHeader("Content-Type", "text/plain")
-        request.send("SETARGS"+JSON.stringify(PageHandler.inputStatus))
-        PageHandler.brightnessIsChanged = false
+        request.send("SETARGS"+JSON.stringify(this.PageHandler.inputStatus))
+        this.PageHandler.brightnessIsChanged = false
     }
 
     _getData() {
@@ -67,13 +71,13 @@ class PacketHandler {
         request.setRequestHeader("Access-Control-Allow-Origin", "*")
         request.send()
 
-        if (request.status = 200) {
+        if (request.status == 200) {
             let status = JSON.parse(request.responseText)
-            PageHandler.animationData = status
+            this.PageHandler.animationData = status
             if (status["program"] != this.lastProgram) {
-                PageHandler.updateProgram(status["program"])
+                this.PageHandler.updateProgram(status["program"])
             }
-            PageHandler.updateArgs(status["arguments"])
+            this.PageHandler.updateArgs(status["arguments"])
             this.lastProgram = status["program"]
         }
     }
