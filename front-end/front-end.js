@@ -71,5 +71,5 @@ let test = {
 }
 
 dh.animationData = test
-console.log(dh)
 dh.updatePage()
+dh.updateArgs({"speed": 10})

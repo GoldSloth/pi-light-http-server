@@ -1,3 +1,11 @@
+function isEmpty(obj) {
+    for(var key in obj) {
+        if(obj.hasOwnProperty(key))
+            return false;
+    }
+    return true;
+}
+
 class DOMHandler {
     constructor() {
         // Connection box
@@ -13,19 +21,9 @@ class DOMHandler {
         // Arguments box
         this.argumentsContainer = document.getElementById("argContainer") // Container
 
-        this.argumentFields = {}
-
-        this.inputStatus = {}
-
-        this.fieldRelations = {
-            "number": "range",
-            "colour": "color"
-        }
-
-        this.animationData = {}
-
         this.refreshRate = 30
         this.brightness = 255
+        this.animationData = {}
 
         this.refreshIsChanged = true;
         this.brightnessIsChanged = true;
@@ -36,19 +34,23 @@ class DOMHandler {
         this.animationRefreshInput.addEventListener("input", function() {
             this.refreshIsChanged = true;
             this.refreshRate = this.animationRefreshInput.value
-        })
+        }.bind(this))
 
         this.brightnessInput.addEventListener("input", function() {
             this.brightnessIsChanged = true;
             this.brightness = this.brightnessInput.value
-        })
-        this.brightness = this.brightnessInput.value
+        }.bind(this))
 
         this.animationSelector.addEventListener("input", function() {
             this.animationIsChanged = true
             this.currentAnimation = this.animationSelector.value
-            this.updatePage()
-        })
+            this._furnishArguments()
+        }.bind(this))
+
+        this.fieldRelations = {
+            "number": "range",
+            "colour": "color"
+        }
     }
 
     _removeChildren(node) {
@@ -58,7 +60,8 @@ class DOMHandler {
     }
 
     _furnishAnimations() {
-        if (!this.animationData === {}) {
+        if (!isEmpty(this.animationData)) {
+            console.log("eek")
             this._removeChildren(this.animationSelector)
             for (var animation in this.animationData) {
                 let x = document.createElement("option")
@@ -70,7 +73,7 @@ class DOMHandler {
     }
 
     _furnishArguments() {
-        if (!this.animationData === {}) {
+        if (!isEmpty(this.animationData)) {
             let currentAnimation = this.animationSelector.value
             let args = this.animationData[currentAnimation].arguments
             this.argumentFields = {}
@@ -81,7 +84,7 @@ class DOMHandler {
                 l.innerText = value.name
                 let i = document.createElement("input")
                 i.type = this.fieldRelations[value.type]
-                i.addEventListener("input", this.updateData)
+                i.addEventListener("input", this.updateData.bind(this))
                 if (i.type == "range") {
                     i.min = value.min
                     i.max = value.max
@@ -99,16 +102,26 @@ class DOMHandler {
             }
         }
     }
-
+    // Should be called on initialisation => Connection to server
     updatePage() {
         this._furnishAnimations()
         this._furnishArguments()
         this.updateData()
     }
+    // Should be called by packet handler when data sent back
+    updateArgs(data) {
+        for (var input in this.argumentFields) {
+            if (input in data) {
+                this.argumentFields[input].value = data[input]
+            }
+        }
+    }
 
+    // Should be called to update the inputStatus property of the object
     updateData() {
         this.inputStatus = {}
-        for (const [key, value] in this.argumentFields) {
+        for (var key in this.argumentFields) {
+            let value = this.argumentFields[key]
             this.inputStatus[key] = value.value
         }
     }
