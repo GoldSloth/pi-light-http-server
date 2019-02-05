@@ -23,6 +23,7 @@ class DOMHandler {
 
         this.refreshRate = 30
         this.brightness = 255
+        this.animations = {}
         this.animationData = {}
 
         this.refreshIsChanged = true;
@@ -41,7 +42,7 @@ class DOMHandler {
             this.brightness = this.brightnessInput.value
         }.bind(this))
 
-        this.animationSelector.addEventListener("input", function() {
+        this.animationSelector.addEventListener("change", function() {
             this.animationIsChanged = true
             this.currentAnimation = this.animationSelector.value
             this._furnishArguments()
@@ -67,21 +68,23 @@ class DOMHandler {
         }
     }
 
-    _furnishAnimations() {
+    _furnishAnimations(program) {
         if (!isEmpty(this.animationData)) {
             this._removeChildren(this.animationSelector)
-            for (var animation in this.animationData) {
+            for (var animation in this.animations) {
                 let x = document.createElement("option")
                 x.value = animation
-                x.innerText = this.animationData[animation].title
+                x.innerText = this.animations[animation].title
                 this.animationSelector.appendChild(x)
             }
         }
+        this.animationSelector.value = program
+        this.currentAnimation = program
     }
 
     _furnishArguments() {
         if (!isEmpty(this.animationData)) {
-            let args = this.animationData[this.currentAnimation].arguments
+            let args = this.animations[this.currentAnimation].arguments
             this.argumentFields = {}
             this._removeChildren(this.argumentsContainer)
             for (const [key, value] of Object.entries(args)) {
@@ -109,8 +112,8 @@ class DOMHandler {
         }
     }
     // Should be called on initialisation => Connection to server
-    updatePage() {
-        this._furnishAnimations()
+    updatePage(program) {
+        this._furnishAnimations(program)
         this._furnishArguments()
         this.updateData()
     }

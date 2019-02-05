@@ -18,8 +18,8 @@ class PacketHandler {
         if (request.status == 200) {
             let status = JSON.parse(request.responseText)
             console.log(request.responseText)
-            this.PageHandler.animationData = status["animations"]
-            this.PageHandler.updatePage()
+            this.PageHandler.animations = status["animations"]
+            this.PageHandler.updatePage(status["program"])
             this.lastProgram = status["program"]
             this.PageHandler.updateProgram(status["program"])
             this.PageHandler.updateArgs(status["arguments"])
