@@ -97,7 +97,7 @@ class DOMHandler {
                     i.step = 0.001
                 }
 
-                i.value = this.animationData[currentAnimation].defaultArgs[key]
+                i.value = this.animationData[this.currentAnimation].defaultArgs[key]
 
                 this.argumentFields[key] = i
 
