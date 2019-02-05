@@ -13,7 +13,7 @@ animations = {
                 "name": "Speed",
                 "type": "number",
                 "min": 0.001,
-                "max": 10,
+                "max": 1.0,
             },
             "saturation": {
                 "name": "Saturation",
@@ -42,7 +42,7 @@ animations = {
                 "name": "Speed",
                 "type": "number",
                 "min": 0.001,
-                "max": 10,
+                "max": 1.0,
             },
             "saturation": {
                 "name": "Saturation",

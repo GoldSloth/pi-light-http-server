@@ -24,7 +24,7 @@ class DOMHandler {
         this.refreshRate = 30
         this.brightness = 255
         this.animations = {}
-        this.animationData = {}
+        this.status = {}
 
         this.refreshIsChanged = true;
         this.brightnessIsChanged = true;
@@ -42,7 +42,7 @@ class DOMHandler {
             this.brightness = this.brightnessInput.value
         }.bind(this))
 
-        this.animationSelector.addEventListener("change", function() {
+        this.animationSelector.addEventListener("input", function() {
             this.animationIsChanged = true
             this.currentAnimation = this.animationSelector.value
             this._furnishArguments()
@@ -69,7 +69,8 @@ class DOMHandler {
     }
 
     _furnishAnimations(program) {
-        if (!isEmpty(this.animationData)) {
+        console.log(this.animations)
+        if (!isEmpty(this.animations)) {
             this._removeChildren(this.animationSelector)
             for (var animation in this.animations) {
                 let x = document.createElement("option")
@@ -83,34 +84,33 @@ class DOMHandler {
     }
 
     _furnishArguments() {
-        if (!isEmpty(this.animationData)) {
-            let args = this.animations[this.currentAnimation].arguments
-            this.argumentFields = {}
-            this._removeChildren(this.argumentsContainer)
-            for (const [key, value] of Object.entries(args)) {
-                let f = document.createElement("form")
-                let l = document.createElement("label")
-                l.innerText = value.name
-                let i = document.createElement("input")
-                i.type = this.fieldRelations[value.type]
-                i.addEventListener("input", this.updateData.bind(this))
-                if (i.type == "range") {
-                    i.min = value.min
-                    i.max = value.max
-                    i.step = 0.001
-                }
-
-                i.value = this.animationData[this.currentAnimation].defaultArgs[key]
-
-                this.argumentFields[key] = i
-
-                f.appendChild(l)
-                f.appendChild(i)
-
-                this.argumentsContainer.appendChild(f)
+        let args = this.animations[this.currentAnimation].arguments
+        this.argumentFields = {}
+        this._removeChildren(this.argumentsContainer)
+        for (const [key, value] of Object.entries(args)) {
+            let f = document.createElement("form")
+            let l = document.createElement("label")
+            l.innerText = value.name
+            let i = document.createElement("input")
+            i.type = this.fieldRelations[value.type]
+            i.addEventListener("input", this.updateData.bind(this))
+            if (i.type == "range") {
+                i.min = value.min
+                i.max = value.max
+                i.step = 0.001
             }
+
+            i.value = this.animations[this.currentAnimation].defaultArgs[key]
+
+            this.argumentFields[key] = i
+
+            f.appendChild(l)
+            f.appendChild(i)
+
+            this.argumentsContainer.appendChild(f)
         }
     }
+
     // Should be called on initialisation => Connection to server
     updatePage(program) {
         this._furnishAnimations(program)
@@ -132,6 +132,7 @@ class DOMHandler {
 
     // Should be called to update the inputStatus property of the object
     updateData() {
+        console.log("E")
         this.inputStatus = {}
         for (var key in this.argumentFields) {
             let value = this.argumentFields[key]

@@ -25,8 +25,8 @@ class PacketHandler {
             this.PageHandler.updateArgs(status["arguments"])
         }
 
-        setInterval(this._getData.bind(this), 1000)
-        setInterval(this._sendData.bind(this), 1000)
+        // setInterval(this._getData.bind(this), 2000)
+        setInterval(this._sendData.bind(this), 500)
     }
 
     _sendData() {
@@ -56,7 +56,7 @@ class PacketHandler {
             request.send("SETBRIT"+JSON.stringify({"brightness": this.PageHandler.brightness}))
             this.PageHandler.brightnessIsChanged = false
         }
-
+        this.PageHandler.updateData()
         let request = new XMLHttpRequest()
         request.open("POST", this.ip, false)
         request.setRequestHeader("Access-Control-Allow-Origin", "*")
