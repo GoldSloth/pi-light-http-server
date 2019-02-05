@@ -7,7 +7,7 @@ class LightWorker(threading.Thread):
     def __init__(self, instructions, animation, updateFrequency):
         super().__init__()
         self.numpixels = 30
-        self.strip = Adafruit_DotStar(self.numpixels, 12000000)
+        self.strip = Adafruit_DotStar(self.numpixels, 1200000)
         self.strip.begin()
 
         self.animation = animation

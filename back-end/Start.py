@@ -75,6 +75,16 @@ animations = {
         "defaultArgs": {
             "colour": (0.5, 0.5, 0.5)
         }
+    },
+    "default": {
+        "func": defaultAnim,
+        "title": "Default Program",
+        "arguments": {
+
+        },
+        "defaultArgs": {
+
+        }
     }
 }
 
