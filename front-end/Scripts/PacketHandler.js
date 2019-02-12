@@ -56,13 +56,15 @@ class PacketHandler {
             request.send("SETBRIT"+JSON.stringify({"brightness": this.PageHandler.brightness}))
             this.PageHandler.brightnessIsChanged = false
         }
-        this.PageHandler.updateData()
-        let request = new XMLHttpRequest()
-        request.open("POST", this.ip, false)
-        request.setRequestHeader("Access-Control-Allow-Origin", "*")
-        request.setRequestHeader("Content-Type", "text/plain")
-        request.send("SETARGS"+JSON.stringify(this.PageHandler.inputStatus))
-        this.PageHandler.brightnessIsChanged = false
+
+        if (this.PageHandler.argumentsAreChanged) {
+            let request = new XMLHttpRequest()
+            request.open("POST", this.ip, false)
+            request.setRequestHeader("Access-Control-Allow-Origin", "*")
+            request.setRequestHeader("Content-Type", "text/plain")
+            request.send("SETARGS"+JSON.stringify(this.PageHandler.inputStatus))
+            this.PageHandler.argumentsAreChanged = false
+        }
     }
 
     _getData() {

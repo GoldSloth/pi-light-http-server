@@ -29,6 +29,7 @@ class DOMHandler {
         this.refreshIsChanged = true;
         this.brightnessIsChanged = true;
         this.animationIsChanged = true;
+        this.argumentsAreChanged = true;
 
         this.currentAnimation = animationSelector.value
 
@@ -55,6 +56,11 @@ class DOMHandler {
 
         this.urlSubmit.addEventListener("click", function() {
             this.ConnectionHandler.start(this.urlEntry.value)
+        }.bind(this))
+
+        this.argumentsContainer.addEventListener("click", function () {
+            this.argumentsAreChanged = true;
+            this.updateData()
         }.bind(this))
     }
 
@@ -132,11 +138,14 @@ class DOMHandler {
 
     // Should be called to update the inputStatus property of the object
     updateData() {
-        console.log("E")
         this.inputStatus = {}
         for (var key in this.argumentFields) {
             let value = this.argumentFields[key]
-            this.inputStatus[key] = value.value
+            if (this.argumentFields[key].type == "color") {
+                this.inputStatus[key] = hexToRGB(value.value)
+            } else {
+                this.inputStatus[key] = value.value
+            }
         }
     }
 }
