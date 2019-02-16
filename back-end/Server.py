@@ -77,7 +77,7 @@ class Server(BaseHTTPRequestHandler):
                 )
                 self.ls.brightness = retData["brightness"]
             elif verb == "STOPSRV":
-                self.instructionQueue.put(("STOP", None))
+                raise KeyboardInterrupt
             else:
                 status = "BAD"
         except:

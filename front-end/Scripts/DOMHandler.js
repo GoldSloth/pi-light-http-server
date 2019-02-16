@@ -66,9 +66,15 @@ class DOMHandler {
         }.bind(this))
 
         this.disconnectButton.addEventListener("click", function() {
-            clearInterval(this.ConnectionHandler.__intervalIDForGet)
-            clearInterval(this.ConnectionHandler.__intervalIDForPost)
+            this.ConnectionHandler.ceasePoll()
             this.connectionStatus.innerText = "Disconnected"
+            this.connectionStatus.style.backgroundColor = "#ff5555"
+        }.bind(this))
+
+        this.stopButton.addEventListener("click", function() {
+            this.ConnectionHandler.sendStop()
+            this.ConnectionHandler.ceasePoll()
+            this.connectionStatus.innerText = "Disconnected - Stopped"
             this.connectionStatus.style.backgroundColor = "#ff5555"
         }.bind(this))
     }

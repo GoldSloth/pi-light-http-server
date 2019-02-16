@@ -72,7 +72,12 @@ class PacketHandler {
         request.open("POST", this.ip, false)
         request.setRequestHeader("Access-Control-Allow-Origin", "*")
         request.setRequestHeader("Content-Type", "text/plain")
-        request.send("STOPSRV")
+        request.send("STOPSRV"+"{}")
+    }
+
+    ceasePoll() {
+        clearInterval(this.__intervalIDForGet)
+        clearInterval(this.__intervalIDForPost)
     }
 
     _getData() {
