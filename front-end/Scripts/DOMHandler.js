@@ -12,6 +12,8 @@ class DOMHandler {
         this.urlEntry = document.getElementById("ipInput") // Input
         this.urlSubmit = document.getElementById("connectButton") // Button
         this.connectionStatus = document.getElementById("connectionStatus") // Output
+        this.stopButton = document.getElementById("stopButton") // Button
+        this.disconnectButton = document.getElementById("disconnectButton") // Button
 
         // Animations box
         this.animationSelector = document.getElementById("animationSelector") // Input
@@ -58,9 +60,16 @@ class DOMHandler {
             this.ConnectionHandler.start(this.urlEntry.value)
         }.bind(this))
 
-        this.argumentsContainer.addEventListener("click", function () {
+        this.argumentsContainer.addEventListener("input", function () {
             this.argumentsAreChanged = true;
             this.updateData()
+        }.bind(this))
+
+        this.disconnectButton.addEventListener("click", function() {
+            clearInterval(this.ConnectionHandler.__intervalIDForGet)
+            clearInterval(this.ConnectionHandler.__intervalIDForPost)
+            this.connectionStatus.innerText = "Disconnected"
+            this.connectionStatus.style.backgroundColor = "#ff5555"
         }.bind(this))
     }
 
@@ -75,7 +84,8 @@ class DOMHandler {
     }
 
     _furnishAnimations(program) {
-        console.log(this.animations)
+        this.connectionStatus.innerText = "Connected"
+        this.connectionStatus.style.backgroundColor = "#55ff55"
         if (!isEmpty(this.animations)) {
             this._removeChildren(this.animationSelector)
             for (var animation in this.animations) {
@@ -127,13 +137,18 @@ class DOMHandler {
     updateArgs(data) {
         for (var input in this.argumentFields) {
             if (input in data) {
-                this.argumentFields[input].value = data[input]
+                if (this.argumentFields[input].type == "color") {
+                    this.argumentFields[input].value = rgbToHex(data[input][0], data[input][1], data[input][2])
+                } else {
+                    this.argumentFields[input].value = data[input]
+                }
             }
         }
     }
 
     updateProgram(newProgram) {
         this.animationSelector.value = newProgram
+        this.updatePage(newProgram)
     }
 
     // Should be called to update the inputStatus property of the object

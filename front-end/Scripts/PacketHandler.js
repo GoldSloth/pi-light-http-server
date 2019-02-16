@@ -25,8 +25,8 @@ class PacketHandler {
             this.PageHandler.updateArgs(status["arguments"])
         }
 
-        // setInterval(this._getData.bind(this), 2000)
-        setInterval(this._sendData.bind(this), 500)
+        this.__intervalIDForGet = setInterval(this._getData.bind(this), 1000)
+        this.__intervalIDForPost = setInterval(this._sendData.bind(this), 300)
     }
 
     _sendData() {
@@ -67,6 +67,14 @@ class PacketHandler {
         }
     }
 
+    sendStop() {
+        let request = new XMLHttpRequest()
+        request.open("POST", this.ip, false)
+        request.setRequestHeader("Access-Control-Allow-Origin", "*")
+        request.setRequestHeader("Content-Type", "text/plain")
+        request.send("STOPSRV")
+    }
+
     _getData() {
         let request = new XMLHttpRequest()
         request.open("GET", this.ip, false)
@@ -78,6 +86,7 @@ class PacketHandler {
             this.PageHandler.animationData = status
             if (status["program"] != this.lastProgram) {
                 this.PageHandler.updateProgram(status["program"])
+                console.log("Changed program")
             }
             this.PageHandler.updateArgs(status["arguments"])
             this.lastProgram = status["program"]

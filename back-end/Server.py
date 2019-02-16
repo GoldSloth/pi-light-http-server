@@ -76,6 +76,8 @@ class Server(BaseHTTPRequestHandler):
                     ("CHANGEBRIT", int(retData["brightness"]))
                 )
                 self.ls.brightness = retData["brightness"]
+            elif verb == "STOPSRV":
+                self.instructionQueue.put(("STOP", None))
             else:
                 status = "BAD"
         except:
