@@ -68,6 +68,7 @@ class PacketHandler {
     }
 
     sendStop() {
+        console.log("SSSSS")
         let request = new XMLHttpRequest()
         request.open("POST", this.ip, false)
         request.setRequestHeader("Access-Control-Allow-Origin", "*")
