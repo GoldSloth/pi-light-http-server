@@ -4,7 +4,15 @@ from PiUtils import *
 from LightThreadWorker import LightWorker
 from LightState import LightState
 
-class Server(BaseHTTPRequestHandler):
+class StoppableHTTPServer(HTTPServer):
+    def serve_forever(self):
+        self.stop = False
+        while not self.stop:
+            self.handle_request()
+        raise KeyboardInterrupt
+
+
+class CustomHandler(BaseHTTPRequestHandler):
     def __init__(self, lights, animations, instructions, ls, *args):
         # Important: A new handler is created for every request.
         self.lights = lights
@@ -77,21 +85,20 @@ class Server(BaseHTTPRequestHandler):
                 )
                 self.ls.brightness = retData["brightness"]
             elif verb == "STOPSRV":
-                print("PLS STOP")
-                quit()
+                self.server.stop = True
             else:
                 status = "BAD"
         except:
             status = "Data Invalid"
         self.wfile.write(status.encode("UTF-8"))
 
-def run(instructions, animations, defaultAnim, server_class=HTTPServer, port=8000):
+def run(instructions, animations, defaultAnim, server_class=StoppableHTTPServer, port=8000):
     # Some funny buisiness with defining everything here, but sure.
     lights = LightWorker(instructions, defaultAnim, 60)
     lights.start()
     ls = LightState(program="default")
     def makeHandler(*args):
-        Server(lights, animations, instructions, ls, *args)
+        CustomHandler(lights, animations, instructions, ls, *args)
     server_address = ('', port)
     httpd = server_class(server_address, makeHandler)
     print('Starting httpd...')
