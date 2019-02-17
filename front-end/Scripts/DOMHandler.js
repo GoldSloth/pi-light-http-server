@@ -150,6 +150,9 @@ class DOMHandler {
                 }
             }
         }
+
+        this.animationRefreshInput.value = data["refresh"]
+        this.brightnessInput.value = data["brightness"]
     }
 
     updateProgram(newProgram) {

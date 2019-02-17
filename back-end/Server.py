@@ -83,7 +83,7 @@ class CustomHandler(BaseHTTPRequestHandler):
                 self.instructionQueue.put(
                     ("CHANGEBRIT", int(retData["brightness"]))
                 )
-                self.ls.brightness = retData["brightness"]
+                self.ls.brightness = int(retData["brightness"])
             elif verb == "STOPSRV":
                 self.server.stop = True
             else:

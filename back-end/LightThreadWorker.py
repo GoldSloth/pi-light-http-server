@@ -19,7 +19,7 @@ class LightWorker(threading.Thread):
         self.shouldStop = False
 
         self.frame = 0
-
+        
         self.args = {}
 
     def run(self):
@@ -50,6 +50,7 @@ class LightWorker(threading.Thread):
                 self.shouldStop = True
                 self.stop()
             elif instruction[0] == "CHANGEBRIT":
+                self.
                 self.strip.setBrightness(instruction[1])
                 self.strip.show()
     
