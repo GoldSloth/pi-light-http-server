@@ -68,7 +68,6 @@ class PacketHandler {
     }
 
     sendStop() {
-        console.log("SSSSS")
         let request = new XMLHttpRequest()
         request.open("POST", this.ip, false)
         request.setRequestHeader("Access-Control-Allow-Origin", "*")
@@ -92,9 +91,9 @@ class PacketHandler {
             this.PageHandler.animationData = status
             if (status["program"] != this.lastProgram) {
                 this.PageHandler.updateProgram(status["program"])
-                console.log("Changed program")
             }
             this.PageHandler.updateArgs(status["arguments"])
+            this.PageHandler.updateOthers(status)
             this.lastProgram = status["program"]
         }
     }

@@ -150,9 +150,15 @@ class DOMHandler {
                 }
             }
         }
+    }
 
-        this.animationRefreshInput.value = data["refresh"]
-        this.brightnessInput.value = data["brightness"]
+    updateOthers(data) {
+        console.log(data.brightness)
+        console.log(data.refresh)
+        this.animationRefreshInput.value = data.refresh
+        this.brightness = data.brightness
+        this.brightnessInput.value = data.brightness
+        this.refreshRate = data.refresh
     }
 
     updateProgram(newProgram) {
