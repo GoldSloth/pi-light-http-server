@@ -20,7 +20,7 @@ def constantColour(x, t, args):
 def hoveringColour(x, t, args):
     d = (math.sin((t + x) * float(args["speed"])) * float(args["variation"]))
     r, g, b = args["colour"]
-    col = colorsys.rgb_to_hsv(r, g, b)
+    col = list(colorsys.rgb_to_hsv(r, g, b))
     col[0] += d
     h, s, v = col
     return colorsys.hsv_to_rgb(h, s, v)
