@@ -1,6 +1,8 @@
 import math
 import colorsys
 
+def clamp(min_val, value, max_val): return min(max(min_val, value), max_val)
+
 def progressiveSinWave(x, t, args):
     d = (math.sin((t + x) * float(args["speed"])) + 1) / 2
     col = colorsys.hsv_to_rgb(d, float(args["saturation"]), float(args["value"]))
@@ -22,5 +24,9 @@ def hoveringColour(x, t, args):
     r, g, b = args["colour"]
     col = list(colorsys.rgb_to_hsv(r, g, b))
     col[0] += d
+    col[0] = clamp(0, col[0], 255)
+    col[1] = clamp(0, col[1], 255)
+    col[2] = clamp(0, col[2], 255)
+
     h, s, v = col
     return colorsys.hsv_to_rgb(h, s, v)
