@@ -85,6 +85,34 @@ animations = {
         "defaultArgs": {
 
         }
+    },
+    "hoveringColour": {
+        "func": hoveringColour,
+        "title": "Hovering sin wave",
+        "arguments":
+        {       
+            "colour": {
+                "type": "colour",
+                "name": "Colour"
+            },
+            "speed": {
+                "name": "Speed",
+                "type": "number",
+                "min": 0.001,
+                "max": 0.1,
+            },
+            "variation": {
+                "name": "Variation",
+                "type": "number",
+                "min": 0,
+                "max": 1,
+            }
+        },
+        "defaultArgs": {
+            "colour": (0.5, 0.5, 0.5),
+            "speed": 0.05,
+            "variation": 0.05
+        }
     }
 }
 
